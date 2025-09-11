@@ -1,0 +1,178 @@
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: TalosControlPlane
+metadata:
+  name: talos-cp
+spec:
+  version: v1.33.4 # Kubernetes version
+  replicas: 1 # Anzahl Master Nodes
+  infrastructureTemplate:
+    kind: ProxmoxMachineTemplate
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+    name: master-template
+    namespace: default
+  controlPlaneConfig:
+    controlplane:
+      generateType: controlplane
+      strategicPatches:
+        - |
+          - op: replace
+            path: /machine/install
+            value:
+              disk: /dev/sda
+              extensions:
+                - image: ghcr.io/siderolabs/qemu-guest-agent:10.1.0
+          - op: add
+            path: /machine/install/extraKernelArgs
+            value:
+              - net.ifnames=0
+          - op: add
+            path: /machine/network/interfaces
+            value:
+              - interface: eth0
+                dhcp: false
+                vip:
+                  ip: 192.168.179.205
+          - op: add
+            path: /machine/network/kubespan
+            value:
+              enabled: true
+          - op: add
+            path: /cluster/network/cni
+            value:
+              name: none
+          - op: add
+            path: /cluster/proxy
+            value:
+              disabled: true
+          - op: add
+            path: /cluster/inlineManifests
+            value:
+              - name: cilium-install
+                contents: |
+                  ---
+                  apiVersion: rbac.authorization.k8s.io/v1
+                  kind: ClusterRoleBinding
+                  metadata:
+                    name: cilium-install
+                  roleRef:
+                    apiGroup: rbac.authorization.k8s.io
+                    kind: ClusterRole
+                    name: cluster-admin
+                  subjects:
+                  - kind: ServiceAccount
+                    name: cilium-install
+                    namespace: kube-system
+                  ---
+                  apiVersion: v1
+                  kind: ServiceAccount
+                  metadata:
+                    name: cilium-install
+                    namespace: kube-system
+                  ---
+                  apiVersion: batch/v1
+                  kind: Job
+                  metadata:
+                    name: cilium-install
+                    namespace: kube-system
+                  spec:
+                    backoffLimit: 10
+                    template:
+                      metadata:
+                        labels:
+                          app: cilium-install
+                      spec:
+                        restartPolicy: OnFailure
+                        tolerations:
+                          - operator: Exists
+                          - effect: NoSchedule
+                            operator: Exists
+                          - effect: NoExecute
+                            operator: Exists
+                          - effect: PreferNoSchedule
+                            operator: Exists
+                          - key: node-role.kubernetes.io/control-plane
+                            operator: Exists
+                            effect: NoSchedule
+                          - key: node-role.kubernetes.io/control-plane
+                            operator: Exists
+                            effect: NoExecute
+                          - key: node-role.kubernetes.io/control-plane
+                            operator: Exists
+                            effect: PreferNoSchedule
+                        affinity:
+                          nodeAffinity:
+                            requiredDuringSchedulingIgnoredDuringExecution:
+                              nodeSelectorTerms:
+                                - matchExpressions:
+                                    - key: node-role.kubernetes.io/control-plane
+                                      operator: Exists
+                        serviceAccount: cilium-install
+                        serviceAccountName: cilium-install
+                        hostNetwork: true
+                        containers:
+                        - name: cilium-install
+                          image: quay.io/cilium/cilium-cli:latest
+                          env:
+                          - name: KUBERNETES_SERVICE_HOST
+                            valueFrom:
+                              fieldRef:
+                                apiVersion: v1
+                                fieldPath: status.podIP
+                          - name: KUBERNETES_SERVICE_PORT
+                            value: "6443"
+                          command:
+                            - cilium
+                            - install
+                            - --set
+                            - ipam.mode=kubernetes
+                            - --set
+                            - kubeProxyReplacement=true
+                            - --set
+                            - securityContext.capabilities.ciliumAgent={CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}
+                            - --set
+                            - securityContext.capabilities.cleanCiliumState={NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}
+                            - --set
+                            - cgroup.autoMount.enabled=false
+                            - --set
+                            - cgroup.hostRoot=/sys/fs/cgroup
+                            - --set
+                            - k8sServiceHost=localhost
+                            - --set
+                            - k8sServicePort=7445
+                            - --set
+                            - hubble.relay.enabled=true
+                            - --set
+                            - hubble.ui.enabled=true
+                            - --set
+                            - prometheus.enabled=true
+                            - --set
+                            - operator.prometheus.enabled=true
+                            - --set
+                            - hubble.metrics.enabled=true
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxMachineTemplate
+metadata:
+  name: master-template
+  namespace: default
+spec:
+  template:
+    spec:
+      disks:
+        bootVolume:
+          disk: scsi0
+          sizeGb: 20
+      format: qcow2
+      full: true
+      memoryMiB: 8192
+      network:
+        default:
+          bridge: vmbr0
+          model: virtio
+      numCores: 2
+      numSockets: 1
+      sourceNode: pve-01
+      templateID: 100
+      checks:
+        skipCloudInitStatus: true

@@ -1,0 +1,37 @@
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxCluster
+metadata:
+  name: proxmox-cluster
+  namespace: default
+spec:
+  schedulerHints:
+    memoryAdjustment: 0
+  allowedNodes:
+    - pve-01
+  controlPlaneEndpoint:
+    host: 192.168.179.251
+    port: 6443
+  dnsServers:
+    - 1.1.1.1
+    - 1.0.0.1
+  ipv4Config:
+    addresses:
+      - 192.168.179.210-192.168.179.250
+    gateway: 192.168.178.1
+    prefix: 23
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: homelab-cluster
+  namespace: default
+spec:
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+    kind: TalosControlPlane
+    name: talos-cp
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+    kind: ProxmoxCluster
+    name: proxmox-cluster
