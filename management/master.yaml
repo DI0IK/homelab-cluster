@@ -22,7 +22,7 @@ spec:
             value:
               disk: /dev/sda
               extensions:
-                - image: ghcr.io/siderolabs/qemu-guest-agent:10.1.0
+                - image: ghcr.io/siderolabs/qemu-guest-agent:10.0.2@sha256:84b42d779721ddab71e0d5c12e10399d6bdd03af0aaa0dafd240e2724d724675
           - op: add
             path: /machine/install/extraKernelArgs
             value:
