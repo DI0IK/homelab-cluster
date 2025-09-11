@@ -6,7 +6,7 @@ metadata:
   namespace: default
 spec:
   clusterName: homelab-cluster
-  replicas: 1 # Anzahl Worker Nodes
+  replicas: 0 # Anzahl Worker Nodes
   selector:
     matchLabels: null
   template:
