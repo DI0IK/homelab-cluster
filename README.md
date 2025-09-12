@@ -1,3 +1,66 @@
+# GitOps-Managed Talos Kubernetes Clusters on Proxmox with Cluster API
+
+This guide details the process of creating a robust, GitOps-driven Kubernetes environment on Proxmox VE. It leverages **Talos Linux** for a secure and minimal OS, **Cluster API (CAPI)** for declarative cluster lifecycle management, and **Flux** for continuous delivery from a Git repository.
+
+The end result is a self-managing setup where a **management cluster** provisions and oversees one or more **workload clusters**, with all cluster configurations and application deployments managed entirely through Git.
+
+---
+
+```mermaid
+%%{init: {'theme': 'neutral'}}%%
+graph TD
+    %% --- Style Definitions for High Contrast ---
+    classDef git fill:#fffbe6,stroke:#f59e0b,stroke-width:2px,color:#000;
+    classDef proxmox fill:#f3f4f6,stroke:#4b5563,stroke-width:2px,color:#000;
+    classDef mgmt fill:#e0f2fe,stroke:#2563eb,stroke-width:2px,color:#000;
+    classDef workload fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000;
+
+    %% --- Components ---
+    subgraph "Initiation"
+        direction LR
+        Admin("fa:fa-user Admin") -- "1. git push" --> GitRepo("fa:fa-git-alt Git Repository<br>/clusters/management<br>/clusters/homelab")
+    end
+
+    subgraph Proxmox["fa:fa-server Proxmox VE Cluster"]
+        direction TB
+        subgraph ManagementCluster["fa:fa-shield-alt Management Cluster"]
+            direction LR
+            FluxMgmt("fa:fa-sync-alt Flux (Cluster Controller)") --> CAPI("fa:fa-sitemap Cluster API (CAPI)")
+        end
+
+        subgraph WorkloadCluster["fa:fa-laptop-code Workload Cluster ('homelab')"]
+            direction LR
+            FluxApps("fa:fa-sync-alt Flux (App Controller)") --> Apps("fa:fa-cubes User Applications")
+        end
+        CAPI -- "3. Provisions & Manages VMs" --> WorkloadCluster
+    end
+
+    %% --- Connections & Flow ---
+    GitRepo -- "2. Syncs Cluster Definitions" --> FluxMgmt
+    GitRepo -- "4. Syncs Application Manifests" --> FluxApps
+
+    %% --- Apply Styles ---
+    class Admin,GitRepo git;
+    class Proxmox proxmox;
+    class ManagementCluster,FluxMgmt,CAPI mgmt;
+    class WorkloadCluster,FluxApps,Apps workload;
+```
+
+---
+
+## Table of Contents
+
+1.  [Prepare Management Cluster Configuration](#1-prepare-management-cluster-configuration)
+2.  [Customize Node Configuration](#2-customize-node-configuration)
+3.  [Bootstrap the Management Cluster](#3-bootstrap-the-management-cluster)
+4.  [Configure Proxmox for Cluster API](#4-configure-proxmox-for-cluster-api)
+5.  [Initialize Cluster API Providers](#5-initialize-cluster-api-providers)
+6.  [Enable GitOps with Flux](#6-enable-gitops-with-flux)
+7.  [Access a New Workload Cluster](#7-access-a-new-workload-cluster)
+8.  [Bootstrap Flux in the Workload Cluster](#8-bootstrap-flux-in-the-workload-cluster)
+
+---
+
 ## 1\. Prepare Management Cluster Configuration
 
 First, we'll generate the necessary configurations and certificates for our initial Talos node, which will become the management cluster.
