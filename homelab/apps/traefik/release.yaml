@@ -18,3 +18,5 @@ spec:
       retries: 3
     crds: Create
   values:
+    service:
+      type: ClusterIP
