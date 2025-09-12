@@ -318,3 +318,12 @@ Now that the `homelab-cluster` is running, install a dedicated instance of Flux 
     # After a few moments, check for your deployed applications
     kubectl get pods -A
     ```
+
+3.  **Retrieve kubeseal key**
+
+    ```bash
+    kubeseal --fetch-cert \
+      --controller-name=sealed-secrets-controller \
+      --controller-namespace=flux-system \
+      > pub-sealed-secrets.pem
+    ```
