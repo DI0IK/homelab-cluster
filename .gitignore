@@ -2,3 +2,4 @@
 .pat
 kubeconfig
 talosconfig
+*-secret.yaml
