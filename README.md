@@ -163,7 +163,9 @@ Next, we install the Cluster API provider components into our management cluster
     Initialize Cluster API with the Proxmox infrastructure provider and the Talos bootstrap/control plane providers.
 
     ```bash
-    KUBECONFIG=./kubeconfig clusterctl init \
+    export KUBECONFIG=./kubeconfig
+
+    clusterctl init \
       --infrastructure proxmox \
       --ipam in-cluster \
       --control-plane talos \
@@ -178,7 +180,7 @@ Install Flux to connect the cluster to your Git repository. This Flux instance w
 
 ```bash
 # Set your GitHub Personal Access Token
-GITHUB_TOKEN=YOUR_PAT_TOKEN
+export GITHUB_TOKEN=YOUR_PAT_TOKEN
 
 # Bootstrap Flux on the management cluster
 flux bootstrap github \
@@ -200,7 +202,9 @@ Once you define a workload cluster (e.g., `homelab-cluster`) in your GitOps repo
     Get the `talosconfig` from the management cluster to interact directly with the workload cluster nodes at the OS level.
 
     ```bash
-    KUBECONFIG=./init/kubeconfig kubectl get secret \
+    export KUBECONFIG=./init/kubeconfig
+
+    kubectl get secret \
       --namespace default homelab-cluster-talosconfig \
       -o jsonpath='{.data.talosconfig}' | base64 -d > talosconfig
     ```
@@ -209,7 +213,9 @@ Once you define a workload cluster (e.g., `homelab-cluster`) in your GitOps repo
     Use `clusterctl` to get the `kubeconfig` needed to interact with the workload cluster's Kubernetes API. This will be saved as `kubeconfig` in your root directory.
 
     ```bash
-    KUBECONFIG=./init/kubeconfig clusterctl get kubeconfig homelab-cluster > kubeconfig
+    export KUBECONFIG=./init/kubeconfig
+
+    clusterctl get kubeconfig homelab-cluster > kubeconfig
     ```
 
 ---
@@ -223,10 +229,11 @@ Now that the `homelab-cluster` is running, install a dedicated instance of Flux 
 
     ```bash
     # Set your GitHub Personal Access Token
-    GITHUB_TOKEN=YOUR_PAT_TOKEN
+    export GITHUB_TOKEN=YOUR_PAT_TOKEN
+    export KUBECONFIG=./kubeconfig
 
     # Bootstrap Flux on the homelab-cluster, using its kubeconfig
-    KUBECONFIG=./kubeconfig flux bootstrap github \
+    flux bootstrap github \
       --owner=<YOUR_GITHUB_USERNAME> \
       --repository=<YOUR_REPO_NAME> \
       --branch=main \
