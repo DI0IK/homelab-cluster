@@ -30,13 +30,9 @@ spec:
             secretName: traefik-wireguard-config
       additionalContainers:
         - name: wireguard
-          image: linuxserver/wireguard:latest
+          image: masipcat/wireguard-go:latest
           imagePullPolicy: IfNotPresent
           env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
             - name: TZ
               value: "Europe/Berlin"
           securityContext:
