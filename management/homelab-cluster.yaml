@@ -282,10 +282,6 @@ spec:
           path: /machine/network/kubespan
           value:
             enabled: true
-        - op: add
-          path: /machine/kernel/modules
-          value:
-            - name: wireguard
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
