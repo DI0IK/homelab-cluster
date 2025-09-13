@@ -5,7 +5,10 @@
     "managerFilePatterns": [
       "/(?:^|/)gotk-components\\.ya?ml$/",
       "/(?:^|/)helm\\.ya?ml$/",
-      "/apps/.+\\.yaml$"
+      "/apps\\/.+\\.yaml$/"
     ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": ["/apps\\/.+\\.yaml$/"]
   }
 }
