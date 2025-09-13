@@ -6,8 +6,5 @@
       "/(?:^|/)gotk-components\\.ya?ml$/",
       "/(?:^|/)helm\\.ya?ml$/"
     ]
-  },
-  "kubernetes": {
-    "managerFilePatterns": ["/-cluster\\.yaml$/"]
   }
 }
