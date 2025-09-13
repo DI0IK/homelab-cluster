@@ -4,7 +4,8 @@
   "flux": {
     "managerFilePatterns": [
       "/(?:^|/)gotk-components\\.ya?ml$/",
-      "/(?:^|/)helm\\.ya?ml$/"
+      "/(?:^|/)helm\\.ya?ml$/",
+      "/apps/.+\\.yaml$"
     ]
   }
 }
