@@ -20,6 +20,9 @@ spec:
   values:
     service:
       type: ClusterIP
+    podSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
     deployment:
       additionalVolumes:
         - name: wireguard-config-volume
@@ -37,9 +40,13 @@ spec:
             - name: TZ
               value: "Europe/Berlin"
           securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
             capabilities:
               add:
                 - NET_ADMIN
+            seccompProfile:
+              type: Unconfined
           volumeMounts:
             - name: wireguard-config-volume
               mountPath: /config/wg0.conf
