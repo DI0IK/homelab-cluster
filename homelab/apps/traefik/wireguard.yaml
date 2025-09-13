@@ -1,0 +1,21 @@
+{
+  "kind": "SealedSecret",
+  "apiVersion": "bitnami.com/v1alpha1",
+  "metadata": {
+    "name": "traefik-wireguard-config",
+    "namespace": "traefik",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "name": "traefik-wireguard-config",
+        "namespace": "traefik",
+        "creationTimestamp": null
+      }
+    },
+    "encryptedData": {
+      "wg0.conf": "AgCHK98XBr3ysVZX/7y18j3X5B831SXX4MmBjtmPBkIi9371iF8lXAGOg4Vj4A6ZAQKtO/U7n6ZlaGxHhsHpF9G9ifL1EyojX14IlLUktct4PfbxK/NyIWsOScq6jxki4nGrSGjRSNqompsWfbGwg3z+yK/AgOVOmUoLdMI7uGtFos5ciKujoM2hBJS72R0NtQSEx9B+/tcm1BBvLmehuXsRlhS78dWpjfsoexdans4pQf4DbcQc1Evsaz63UahRX0QmushYTbHz7XCgYOg1d+Xw4xqzGXNwaHxMyjezr62TS9UWjs7jVv8YCdQIcCqKoWh1xUUo3A+ac7je7RFJC9SlLwjUvxUlr+IpwgasTKF/oZ5Fbr4W95kVWzJZr8+j3CzbWn8F2jfqtYa/mZUTthQdG6iJvbQ0VttiIkW8Yj0OvczY7D09fS2RCdUZF/HY9/Sdo2aGKYYsTLPwZtW0AFEAl4mutwo3P67AUBd12rnDUgGZRNoY11Zk4MtbghY+QNmeU2uv8WkiThAP9qIeJy7b4kL6g4zyegvuE65ndQsg1X9NpCzqUCx7Ss2DGf1Wnj4ydc6v21/E+vzNGXrG/Yntdb6AUZ/+l85sMigX39r/78lKimcPio4KHywwdCzbu9oZ1E6Ad5MCvSGm2BDnYwrB617B3BBZCSnnYNegfW6+HYPBu18aJgX3nciba6M+QdsxViBU/Igd//0FodpKfUFVs0PO6ETDutUlpkOkrMMVV9TOHDTbc6nyOl1D6FDEA4wHAFFVR82FQcjCXfZFsLW5Rw+dfoI4rIiNvrO8QRbJvhfcZJA+LV/CrzsU9vUh3lpKt1st0ZVtzpaEC9AsrqkKIRKN+gUh5CUYNPKJ3yXYulHMg5xefUQks4ucl0CZe1rG4WZ+ArS/CgVIslX/VDQL25+VXzrf5SUhJoDXV5V+zTOLvc0yjWA1gxCvfExxRn24R4hywF0NaW2odRP2L0Jwqw/ih2MMKLt9B+qoiZOTcfX7L2SlspOiLd42yQC9Yi+gGuDflyhgZaK8nvM5gFEYRw=="
+    }
+  }
+}

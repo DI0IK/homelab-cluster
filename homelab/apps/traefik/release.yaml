@@ -20,3 +20,29 @@ spec:
   values:
     service:
       type: ClusterIP
+    deployment:
+      additionalVolumes:
+        - name: wireguard-config-volume
+          secret:
+            secretName: traefik-wireguard-config
+      additionalContainers:
+        - name: wireguard
+          image: linuxserver/wireguard:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_MODULE
+          volumeMounts:
+            - name: wireguard-config-volume
+              mountPath: /config/wg0.conf
+              subPath: wg0.conf
+              readOnly: true
