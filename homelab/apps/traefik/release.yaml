@@ -51,3 +51,20 @@ spec:
               mountPath: /etc/wireguard/wg0.conf
               subPath: wg0.conf
               readOnly: true
+      initContainers:
+        - name: sysctls
+          image: busybox
+          command:
+            - sh
+            - -c
+            - sysctl -w net.ipv4.ip_forward=1 && sysctl -w net.ipv4.conf.all.forwarding=1 && sysctl -w net.ipv6.conf.all.forwarding=1
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
+            runAsUser: 0
+            runAsGroup: 0
+            capabilities:
+              add:
+                - NET_ADMIN
+            seccompProfile:
+              type: Unconfined
