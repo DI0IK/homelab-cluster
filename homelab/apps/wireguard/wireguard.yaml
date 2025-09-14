@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      initContainers:
+        - name: sysctls
+          image: busybox
+          command:
+            - sh
+            - -c
+            - sysctl -w net.ipv4.ip_forward=1 && sysctl -w net.ipv4.conf.all.forwarding=1 && sysctl -w net.ipv6.conf.all.forwarding=1
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+            privileged: true
+      containers:
+        - name: wireguard
+          image: masipcat/wireguard-go:latest
+          command:
+            - sh
+            - -c
+            - /entrypoint.sh
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: healthcheck
+          livenessProbe: &probe
+            httpGet:
+              path: /
+              port: healthcheck
+          readinessProbe: *probe
+          env:
+            - name: LOG_LEVEL
+              value: info
+            - name: ENABLE_HEALTHCHECK
+              value: "true"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+            privileged: true
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: "100m"
+            limits:
+              memory: 256Mi
+          volumeMounts:
+            - name: cfgmap
+              mountPath: /etc/wireguard/wg0.conf
+              subPath: wg0.conf
+      volumes:
+        - name: cfgmap
+          secret:
+            secretName: traefik-wireguard-config
