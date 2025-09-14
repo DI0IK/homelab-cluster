@@ -20,3 +20,4 @@ spec:
   values:
     service:
       type: ClusterIP
+      clusterIP: 10.96.0.205
