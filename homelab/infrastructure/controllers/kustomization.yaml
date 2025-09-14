@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - sealed-secrets.yaml
   - nfs-subdir-external-provisioner.yaml
+  - cert-manager.yaml
