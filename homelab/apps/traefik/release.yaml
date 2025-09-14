@@ -48,6 +48,6 @@ spec:
               type: Unconfined
           volumeMounts:
             - name: wireguard-config-volume
-              mountPath: /config/wg0.conf
+              mountPath: /etc/wireguard/wg0.conf
               subPath: wg0.conf
               readOnly: true
