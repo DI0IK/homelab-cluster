@@ -4,3 +4,4 @@ namespace: wireguard
 resources:
   - wireguard-config.yaml
   - wireguard.yaml
+  - namespace.yaml
