@@ -23,6 +23,7 @@ spec:
     podSecurityContext:
       seccompProfile:
         type: RuntimeDefault
+    securityContext: {}
     deployment:
       additionalVolumes:
         - name: wireguard-config-volume
