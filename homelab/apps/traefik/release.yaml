@@ -23,7 +23,6 @@ spec:
     podSecurityContext:
       seccompProfile:
         type: RuntimeDefault
-    securityContext: {}
     deployment:
       additionalVolumes:
         - name: wireguard-config-volume
@@ -40,6 +39,7 @@ spec:
             privileged: true
             allowPrivilegeEscalation: true
             runAsUser: 0
+            runAsGroup: 0
             capabilities:
               add:
                 - NET_ADMIN
