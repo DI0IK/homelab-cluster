@@ -22,14 +22,15 @@ spec:
       type: ClusterIP
       spec:
         clusterIP: 10.96.0.205
-    websecure:
-      http3:
-        enabled: true
-        advertisedPort: 443
-      proxyProtocol:
-        trustedIPs:
-          - "10.0.0.0/8"
-    web:
-      proxyProtocol:
-        trustedIPs:
-          - "10.0.0.0/8"
+    ports:
+      websecure:
+        http3:
+          enabled: true
+          advertisedPort: 443
+        proxyProtocol:
+          trustedIPs:
+            - "10.0.0.0/8"
+      web:
+        proxyProtocol:
+          trustedIPs:
+            - "10.0.0.0/8"
