@@ -51,15 +51,15 @@ spec:
               mountPath: /etc/wireguard/wg0.conf
               subPath: wg0.conf
               readOnly: true
-                    lifecycle:
-          postStart:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - >
-                  iptables -t nat -A PREROUTING -i wg0 -p tcp -j DNAT --to-destination 127.0.0.1;
-                  iptables -t nat -A PREROUTING -i wg0 -p udp -j DNAT --to-destination 127.0.0.1;
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - >
+                    iptables -t nat -A PREROUTING -i wg0 -p tcp -j DNAT --to-destination 127.0.0.1;
+                    iptables -t nat -A PREROUTING -i wg0 -p udp -j DNAT --to-destination 127.0.0.1;
       initContainers:
         - name: sysctls
           image: busybox
