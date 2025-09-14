@@ -60,6 +60,7 @@ spec:
                   - >
                     iptables -t nat -A PREROUTING -i wg0 -p tcp -j DNAT --to-destination 127.0.0.1;
                     iptables -t nat -A PREROUTING -i wg0 -p udp -j DNAT --to-destination 127.0.0.1;
+                    iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE;
       initContainers:
         - name: sysctls
           image: busybox
