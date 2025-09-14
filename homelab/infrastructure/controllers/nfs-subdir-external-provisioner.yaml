@@ -21,7 +21,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: nfs-subdir-external-provisioner
-      version: "2.17.6"
+      version: "4.0.18"
   install:
     crds: Create
   interval: 1h0m0s
