@@ -4,3 +4,4 @@ metadata:
   name: logging
   labels:
     name: logging
+    pod-security.kubernetes.io/enforce: privileged
