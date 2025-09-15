@@ -17,13 +17,22 @@ spec:
   values:
     prometheus:
       prometheusSpec:
-        server:
-          retention: 30d
-          persistentVolume:
-            enabled: true
-            size: 10Gi
-            storageClass: nfs-client
-            accessModes:
-              - ReadWriteOnce
-            annotations:
-              nfs.io/storage-path: prometheus
+        serviceMonitorSelectorNilUsesHelmValues: false
+        serviceMonitorNamespaceSelector: {}
+        serviceMonitorSelector: {}
+        alertmanagerConfigSelectorNilUsesHelmValues: false
+        alertmanagerConfigNamespaceSelector: {}
+        alertmanagerConfigSelector: {}
+        podMonitorSelectorNilUsesHelmValues: false
+        podMonitorNamespaceSelector: {}
+        podMonitorSelector: {}
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn
+              accessModes: ["ReadWriteOnce"]
+              annotations:
+                nfs.io/storage-path: prometheus
+              resources:
+                requests:
+                  storage: 10Gi
