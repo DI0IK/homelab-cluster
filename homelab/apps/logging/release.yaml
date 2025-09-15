@@ -152,6 +152,7 @@ spec:
       interval: 10m
   values:
     server:
+      retention: 30d
       persistentVolume:
         enabled: true
         size: 10Gi
