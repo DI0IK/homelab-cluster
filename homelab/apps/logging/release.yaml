@@ -50,9 +50,6 @@ spec:
           k8s-app: kube-controller-manager
     kubeEtcd:
       service:
-        selector:
-          k8s-app: kube-controller-manager
-      service:
         enabled: true
         port: 2379
         targetPort: 2379
