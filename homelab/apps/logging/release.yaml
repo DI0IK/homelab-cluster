@@ -48,6 +48,11 @@ spec:
       service:
         selector:
           k8s-app: kube-controller-manager
+    kubeProxy:
+      enabled: true
+      service:
+        selector:
+          k8s-app: kube-proxy
     kubeEtcd:
       service:
         enabled: true
