@@ -68,11 +68,8 @@ spec:
           enable_api: true
         storage:
           type: "filesystem"
-            
-      deploymentMode: SingleBinary
 
-      singleBinary:
-        replicas: 1
+      deploymentMode: SingleBinary
 
       backend:
         replicas: 0
