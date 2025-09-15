@@ -55,4 +55,4 @@ spec:
       services:
         - name: logging-stack-grafana
           kind: Service
-          port: service
+          port: http-web
