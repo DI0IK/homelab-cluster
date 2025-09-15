@@ -38,6 +38,32 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
+    alertmanager:
+      extraSecretMounts:
+        - name: pagerduty-secret-volume
+          secretName: pagerduty-secret
+          mountPath: /etc/alertmanager/secrets
+          readOnly: true
+      config:
+        receivers:
+          - name: "PagerDuty"
+            pagerduty_configs:
+              - send_resolved: true
+                service_key_file: "/etc/alertmanager/secrets/service_key"
+          - name: "null"
+        route:
+          group_by: [cluster]
+          receiver: PagerDuty
+          routes:
+            - match:
+                severity: critical
+              receiver: "PagerDuty"
+            - match:
+                severity: warning
+              receiver: "PagerDuty"
+            - match:
+                severity: info
+              receiver: "null"
     kubeControllerManager:
       enabled: true
       service:

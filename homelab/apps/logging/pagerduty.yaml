@@ -1,0 +1,22 @@
+{
+  "kind": "SealedSecret",
+  "apiVersion": "bitnami.com/v1alpha1",
+  "metadata": {
+    "name": "pagerduty-secret",
+    "namespace": "logging",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "name": "pagerduty-secret",
+        "namespace": "logging",
+        "creationTimestamp": null
+      },
+      "type": "Opaque"
+    },
+    "encryptedData": {
+      "service_key": "AgBAzYZXyxcefoWqDQ4aNU6h9z6FY+J4snIucc/y7eIJADqadrS9AY5hWaPlUud38UeKvfdj12cQI0/IYJXIOlIT3fKKUc/rFKTuY6zuxMdOlGMau3CVkjqihbrpCYztw1yPqD8mgRB9A1NVU/YkNE3nPO/NJAC+wKQG1U0ERwIM63HPNXz9tjDM2geYz3P/9mmcTTm0XMsYfv5XwrivvfmnO/lp7O3qfuzItWfb6q9FUR7ATH+47Jm05qqMH0UQmncM9amOiXimnsn7SwipuH12kQqPlDTVlHc5O9AAtDiaKyYiZP61DDlQQmOH64yiSEYGrxc688Wthx1OpI/MdCHptUsgw8xZbqo3qXc6UXVoAZHQJA2jPaQZm3iDzGZ0t4EbakURyy5PdFWrN+0Jzincj/4OK0EIU3HwPAA/CkO2VeldVfU6Jode09zSDnRHcwH/CQfNDMhOMVpNrnFmki5Z5dtoAwhaXYRjRcn8YXktQnysZVEaINSrnygu0VcktvlKRbKxc6+ulE2vfLe82aAAu6/G1+a/5laiNy639Ojlovks+/u3W7kgVmAaiSGi68IfDlwaj1MepHLtjzJzs3lD8C7g4bILAIMPw7gcdDeYB0QjIXOLRG3QWK1Y0hmyYCuP/al4NNtntKtkDpTxJb7Le0ZB/tvv/Eg8oao5vwWAQZSVPKzpoSXE+X79RmfUGuCAVLbIkviUwbfLXt3cWmA/v7Ajrn/5E3DAlW1xkMXI/g=="
+    }
+  }
+}
