@@ -40,6 +40,8 @@ spec:
       alertmanager:
         persistence:
           storageClass: nfs-client
+          annotations:
+            nfs.io/storage-path: alertmanager
     loki:
       singleBinary:
         replicas: 1
