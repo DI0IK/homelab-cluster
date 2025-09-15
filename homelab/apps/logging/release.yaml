@@ -49,7 +49,13 @@ spec:
         selector:
           k8s-app: kube-controller-manager
     kubeProxy:
-      enabled: false
+      enabled: true
+      service:
+        enabled: true
+        port: 10249
+        targetPort: 10249
+        selector:
+          k8s-app: kube-proxy
     kubeEtcd:
       service:
         enabled: true
