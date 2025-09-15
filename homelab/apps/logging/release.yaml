@@ -17,6 +17,8 @@ spec:
   values:
     prometheus:
       prometheusSpec:
+        secrets:
+          - etcd-client-cert
         serviceMonitorSelectorNilUsesHelmValues: false
         serviceMonitorNamespaceSelector: {}
         serviceMonitorSelector: {}
@@ -36,14 +38,30 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
-    kubeProxy:
-      enabled: false
     kubeControllerManager:
-      enabled: false
+      enabled: true
+      service:
+        selector:
+          k8s-app: kube-controller-manager
     kubeScheduler:
-      enabled: false
-    defaultRules:
-      rules:
-        kubeControllerManager: false
-        kubeProxy: false
-        kubeSchedulerAlerting: false
+      enabled: true
+      service:
+        selector:
+          k8s-app: kube-controller-manager
+    kubeEtcd:
+      service:
+        selector:
+          k8s-app: kube-controller-manager
+      service:
+        enabled: true
+        port: 2379
+        targetPort: 2379
+        selector:
+          k8s-app: kube-controller-manager
+      serviceMonitor:
+        scheme: https
+        insecureSkipVerify: false
+        serverName: "localhost"
+        caFile: "/etc/prometheus/secrets/etcd-client-cert/ca.crt"
+        certFile: "/etc/prometheus/secrets/etcd-client-cert/server.crt"
+        keyFile: "/etc/prometheus/secrets/etcd-client-cert/server.key"
