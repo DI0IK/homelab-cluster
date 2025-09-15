@@ -18,7 +18,7 @@ spec:
     prometheus:
       prometheusSpec:
         secrets:
-          - etcd-client-cert
+          - etcd-secrets
         serviceMonitorSelectorNilUsesHelmValues: false
         serviceMonitorNamespaceSelector: {}
         serviceMonitorSelector: {}
@@ -59,6 +59,6 @@ spec:
         scheme: https
         insecureSkipVerify: false
         serverName: "localhost"
-        caFile: "/etc/prometheus/secrets/etcd-client-cert/ca.crt"
-        certFile: "/etc/prometheus/secrets/etcd-client-cert/server.crt"
-        keyFile: "/etc/prometheus/secrets/etcd-client-cert/server.key"
+        caFile: "/etc/prometheus/secrets/etcd-secrets/ca.crt"
+        certFile: "/etc/prometheus/secrets/etcd-secrets/server.crt"
+        keyFile: "/etc/prometheus/secrets/etcd-secrets/server.key"
