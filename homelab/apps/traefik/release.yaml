@@ -58,3 +58,7 @@ spec:
       access:
         enabled: true
         format: json
+    metrics:
+      prometheus:
+        service:
+          enabled: true
