@@ -1,0 +1,61 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus-ingress
+  namespace: logging
+  labels:
+    app.kubernetes.io/name: prometheus
+  annotations:
+    gethomepage.dev/href: "https://prometheus.dominikstahl.dev"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "Monitoring"
+    gethomepage.dev/group: System
+    gethomepage.dev/icon: prometheus
+    gethomepage.dev/app: prometheus
+    gethomepage.dev/name: Prometheus
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=prometheus"
+    gethomepage.dev/allowGroups: Prometheus
+    gethomepage.dev/widget.type: "prometheus"
+    gethomepage.dev/widget.url: "http://homelab-logging-base-kube-prometheus.logging.svc:9090"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`prometheus.dominikstahl.dev`)
+      kind: Rule
+      middlewares:
+        - name: ak-outpost-authentik-embedded-outpost
+          namespace: authentik
+      services:
+        - name: homelab-logging-base-kube-prometheus
+          kind: Service
+          port: http-web
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-ingress
+  namespace: logging
+  labels:
+    app.kubernetes.io/name: grafana
+  annotations:
+    gethomepage.dev/href: "https://grafana.dominikstahl.dev"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "Monitoring"
+    gethomepage.dev/group: System
+    gethomepage.dev/icon: grafana
+    gethomepage.dev/app: grafana
+    gethomepage.dev/name: Grafana
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=grafana"
+    gethomepage.dev/allowGroups: Grafana
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`grafana.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: homelab-logging-base-grafana
+          kind: Service
+          port: http-web

@@ -1,0 +1,40 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: logging-stack
+  namespace: logging
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: loki-stack
+      version: "2.10.2"
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+      interval: 10m
+  values:
+    grafana:
+      enabled: true
+      persistence:
+        enabled: true
+        type: pvc
+        size: 10Gi
+        storageClassName: nfs-client
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+          nfs.io/storage-path: grafana
+    prometheus:
+      enabled: true
+      server:
+        persistentVolume:
+          enabled: true
+          size: 10Gi
+          storageClassName: nfs-client
+          accessModes:
+            - ReadWriteOnce
+          annotations:
+            nfs.io/storage-path: prometheus

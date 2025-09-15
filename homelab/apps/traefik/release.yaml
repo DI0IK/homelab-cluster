@@ -38,3 +38,23 @@ spec:
       default:
         defaultCertificate:
           secretName: cloudflare-certificate
+    providers:
+      kubernetesCRD:
+        allowCrossNamespace: true
+        allowEmptyServices: true
+        allowExternalNameServices: true
+      kubernetesIngress:
+        allowCrossNamespace: true
+        allowEmptyServices: true
+        allowExternalNameServices: true
+    deployment:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9100"
+        prometheus.io/path: /metrics
+    logs:
+      general:
+        format: json
+      access:
+        enabled: true
+        format: json

@@ -3,3 +3,4 @@
 kubeconfig
 talosconfig
 *-secret.yaml
+*.pem
