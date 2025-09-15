@@ -6,3 +6,4 @@ resources:
   - repository.yaml
   - release.yaml
   - ingress.yaml
+  - grafana-dashboard.yaml
