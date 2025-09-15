@@ -49,6 +49,8 @@ spec:
           enabled: true
           size: 10Gi
           storageClass: nfs-client
+          annotations:
+            nfs.io/storage-path: loki
       loki:
         commonConfig:
           replication_factor: 1
