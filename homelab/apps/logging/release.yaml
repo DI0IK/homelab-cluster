@@ -134,6 +134,16 @@ spec:
             type: prometheus
             url: http://logging-stack-prometheus-server.logging.svc.cluster.local
             isDefault: true
+    sidecar:
+      dashboards:
+        enabled: true
+        defaultFolderName: "General"
+        label: grafana_dashboard
+        labelValue: "1"
+        folderAnnotation: grafana_folder
+        searchNamespace: ALL
+        provider:
+          foldersFromFilesStructure: true
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
