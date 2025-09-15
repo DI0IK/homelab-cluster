@@ -29,10 +29,10 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: nfs-client
               accessModes: ["ReadWriteOnce"]
               annotations:
                 nfs.io/storage-path: prometheus
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 50Gi
