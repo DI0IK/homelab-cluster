@@ -17,7 +17,7 @@ metadata:
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=prometheus"
     gethomepage.dev/allowGroups: Prometheus
     gethomepage.dev/widget.type: "prometheus"
-    gethomepage.dev/widget.url: "http://homelab-logging-base-kube-prometheus.logging.svc:9090"
+    gethomepage.dev/widget.url: "http://logging-stack-prometheus-server.logging.svc:9090"
 spec:
   entryPoints:
     - websecure
@@ -25,7 +25,7 @@ spec:
     - match: Host(`prometheus.dominikstahl.dev`)
       kind: Rule
       services:
-        - name: homelab-logging-base-kube-prometheus
+        - name: logging-stack-prometheus-server
           kind: Service
           port: http-web
 ---
@@ -53,6 +53,6 @@ spec:
     - match: Host(`grafana.dominikstahl.dev`)
       kind: Rule
       services:
-        - name: homelab-logging-base-grafana
+        - name: logging-stack-grafana
           kind: Service
           port: http-web
