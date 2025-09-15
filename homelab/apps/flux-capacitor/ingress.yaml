@@ -1,0 +1,26 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: flux-capacitor
+  namespace: flux-system
+  annotations:
+    gethomepage.dev/href: "https://flux.dominikstahl.dev"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "Flux Capacitor"
+    gethomepage.dev/group: System
+    gethomepage.dev/icon: flux
+    gethomepage.dev/app: flux
+    gethomepage.dev/name: Flux Capacitor
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=flux-capacitor"
+    gethomepage.dev/allowGroups: Flux
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`flux.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: capacitor
+          kind: Service
+          port: 9000

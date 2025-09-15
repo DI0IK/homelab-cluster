@@ -22,9 +22,6 @@ spec:
   routes:
     - match: Host(`traefik.dominikstahl.dev`)
       kind: Rule
-      middlewares:
-        - name: ak-outpost-authentik-embedded-outpost
-          namespace: authentik
       services:
         - name: api@internal
           kind: TraefikService

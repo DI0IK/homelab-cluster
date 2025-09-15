@@ -24,9 +24,6 @@ spec:
   routes:
     - match: Host(`prometheus.dominikstahl.dev`)
       kind: Rule
-      middlewares:
-        - name: ak-outpost-authentik-embedded-outpost
-          namespace: authentik
       services:
         - name: homelab-logging-base-kube-prometheus
           kind: Service
