@@ -33,3 +33,5 @@ spec:
     nfs:
       server: 192.168.179.172
       path: /mnt/nvme/homelab
+    storageClass:
+      pathPattern: "${.PVC.namespace}/${.PVC.annotations.nfs.io/storage-path}"
