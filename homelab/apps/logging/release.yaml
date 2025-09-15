@@ -37,3 +37,6 @@ spec:
             - ReadWriteOnce
           annotations:
             nfs.io/storage-path: prometheus
+    alertmanager:
+      persistence:
+        storageClass: nfs-client
