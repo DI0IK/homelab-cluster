@@ -35,10 +35,10 @@ spec:
           trustedIPs:
             - "10.0.0.0/8"
       znc:
-        port: 6697
+        port: 16697
         expose:
           default: true
-        exposedPort: 6697
+        exposedPort: 16697
         protocol: TCP
         proxyProtocol:
           trustedIPs:
