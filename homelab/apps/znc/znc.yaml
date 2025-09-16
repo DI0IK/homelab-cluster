@@ -59,15 +59,29 @@ spec:
   type: LoadBalancer
 ---
 apiVersion: traefik.io/v1alpha1
-kind: IngressRouteTCP
+kind: IngressRoute
 metadata:
-  name: znc
+  name: znc-ingress
   namespace: znc
+  labels:
+    app.kubernetes.io/name: znc
+  annotations:
+    gethomepage.dev/href: "https://znc.dominikstahl.dev"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "ZNC bouncer"
+    gethomepage.dev/group: System
+    gethomepage.dev/icon: znc
+    gethomepage.dev/app: znc
+    gethomepage.dev/name: ZNC
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=znc"
+    gethomepage.dev/allowGroups: ZNC
 spec:
   entryPoints:
-    - znc
+    - websecure
   routes:
-    - match: HostSNI(`*`)
+    - match: Host(`znc.dominikstahl.dev`)
+      kind: Rule
       services:
         - name: znc-service
+          kind: Service
           port: 6697
