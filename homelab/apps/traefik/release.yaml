@@ -34,6 +34,17 @@ spec:
         proxyProtocol:
           trustedIPs:
             - "10.0.0.0/8"
+      znc:
+        port: 16697
+        expose:
+          default: true
+        exposedPort: 16697
+        protocol: TCP
+        proxyProtocol:
+          trustedIPs:
+            - "10.0.0.0/8"
+        tls:
+          enabled: true
     tlsStore:
       default:
         defaultCertificate:

@@ -85,3 +85,17 @@ spec:
         - name: znc-service
           kind: Service
           port: 6697
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: znc
+  namespace: znc
+spec:
+  entryPoints:
+    - znc
+  routes:
+    - match: HostSNI(`*`)
+      services:
+        - name: znc-service
+          port: 6697
