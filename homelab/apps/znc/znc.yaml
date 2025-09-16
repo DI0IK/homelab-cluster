@@ -68,8 +68,6 @@ spec:
     - znc
   routes:
     - match: HostSNI(`*`)
-      kind: Rule
       services:
         - name: znc-service
-          kind: Service
           port: 6697
