@@ -5,3 +5,4 @@ resources:
   - ./wireguard
   #  - ./flux-capacitor
   - ./logging
+  - ./znc
