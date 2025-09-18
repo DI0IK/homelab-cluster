@@ -51,10 +51,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: znc-service
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/path: "/seedpool_metrics"
-    prometheus.io/port: "metrics-port"
+  labels:
+    app: znc
 spec:
   selector:
     app: znc
@@ -110,3 +108,21 @@ spec:
       services:
         - name: znc-service
           port: 6697
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: znc-servicemonitor
+  labels:
+    app: znc
+spec:
+  selector:
+    matchLabels:
+      app: znc
+  endpoints:
+    - port: metrics-port
+      path: /seedpool_metrics
+      interval: 30s
+  namespaceSelector:
+    matchNames:
+      - znc
