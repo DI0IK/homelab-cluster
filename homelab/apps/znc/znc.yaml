@@ -102,4 +102,4 @@ spec:
       services:
         - name: znc-service
           port: 6697
-      tls: {}
+  tls: {}
