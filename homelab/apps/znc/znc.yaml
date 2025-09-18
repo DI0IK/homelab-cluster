@@ -96,9 +96,9 @@ metadata:
   namespace: znc
 spec:
   entryPoints:
-    - znc
+    - irc
   routes:
-    - match: HostSNI(`*`)
+    - match: HostSNI(`znc.dominikstahl.dev`)
       services:
         - name: znc-service
           port: 6697

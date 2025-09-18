@@ -34,11 +34,11 @@ spec:
         proxyProtocol:
           trustedIPs:
             - "10.0.0.0/8"
-      znc:
-        port: 16697
+      irc:
+        port: 6697
         expose:
           default: true
-        exposedPort: 16697
+        exposedPort: 6697
         protocol: TCP
         proxyProtocol:
           trustedIPs:
