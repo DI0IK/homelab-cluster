@@ -37,8 +37,6 @@ spec:
           ports:
             - name: znc-port
               containerPort: 6697
-            - name: metrics-port
-              containerPort: 8085 # Expose the Prometheus metrics port
           volumeMounts:
             - name: znc-data
               mountPath: /znc-data
@@ -61,10 +59,6 @@ spec:
       protocol: TCP
       port: 6697
       targetPort: znc-port
-    - name: metrics-port
-      protocol: TCP
-      port: 8085 # Expose the metrics port on the service
-      targetPort: metrics-port
   type: LoadBalancer
 ---
 apiVersion: traefik.io/v1alpha1
@@ -108,21 +102,3 @@ spec:
       services:
         - name: znc-service
           port: 6697
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: znc-servicemonitor
-  labels:
-    app: znc
-spec:
-  selector:
-    matchLabels:
-      app: znc
-  endpoints:
-    - port: metrics-port
-      path: /seedpool_metrics
-      interval: 30s
-  namespaceSelector:
-    matchNames:
-      - znc
