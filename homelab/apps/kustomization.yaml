@@ -6,3 +6,4 @@ resources:
   #  - ./flux-capacitor
   - ./logging
   - ./znc
+  - ./n8n

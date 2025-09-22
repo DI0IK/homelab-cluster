@@ -1,0 +1,32 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+  namespace: n8n
+spec:
+  releaseName: n8n
+  chartRef:
+    kind: OCIRepository
+    name: n8n
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
+    crds: Create
+  values:
+    resources:
+      limits:
+        memory: 2048Mi
+      requests:
+        memory: 512Mi
+    main:
+      persistence:
+        enabled: true
+        storageClass: "nfs-client"
+        annotations:
+          nfs.io/storage-path: data
+        type: dynamic
+    worker:
+      enabled: true
+      persistence:
+        enabled: false
