@@ -33,7 +33,3 @@ spec:
           block.env.access.in.node: true
         db:
           sqlite.pool.size: 5
-    worker:
-      enabled: false
-      persistence:
-        enabled: false
