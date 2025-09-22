@@ -34,6 +34,6 @@ spec:
         db:
           sqlite.pool.size: 5
     worker:
-      enabled: true
+      enabled: false
       persistence:
         enabled: false
