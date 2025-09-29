@@ -19,9 +19,10 @@ spec:
     crds: Create
   values:
     service:
-      type: ClusterIP
+      type: LoadBalancer
+      externalTrafficPolicy: Local
       spec:
-        clusterIP: 10.96.0.205
+        loadBalancerIP: 10.96.0.205
     ports:
       websecure:
         http3:
