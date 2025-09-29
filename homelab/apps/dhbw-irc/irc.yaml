@@ -62,6 +62,16 @@ spec:
       targetPort: dhbw-irc-port
 ---
 apiVersion: traefik.io/v1alpha1
+kind: ServersTransportTCP
+metadata:
+  name: dhbw-irc-proxyProtocol
+  namespace: dhbw-irc
+spec:
+  proxyProtocol:
+    version: 1
+  terminationDelay: 100ms
+---
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: dhbw-irc
@@ -74,6 +84,5 @@ spec:
       services:
         - name: dhbw-irc-service
           port: 6667
-          proxyProtocol:
-            version: 1
+          serversTransport: dhbw-irc-proxyProtocol
   tls: {}
