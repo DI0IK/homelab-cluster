@@ -8,3 +8,4 @@ resources:
   - ./znc
   - ./n8n
   - ./dhbw-irc
+  - ./metallb
