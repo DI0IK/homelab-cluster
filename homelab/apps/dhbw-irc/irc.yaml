@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ngircd-pvc
+  name: dhbw-irc-pvc
   annotations:
     nfs.io/storage-path: data
 spec:
@@ -16,69 +16,62 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ngircd
+  name: dhbw-irc
   labels:
-    app: ngircd
+    app: dhbw-irc
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: ngircd
+      app: dhbw-irc
   template:
     metadata:
       labels:
-        app: ngircd
+        app: dhbw-irc
     spec:
       containers:
-        - name: ngircd
-          image: lscr.io/linuxserver/ngircd:latest
+        - name: dhbw-irc
+          image: ghcr.io/ergochat/ergo:stable
           imagePullPolicy: Always
           ports:
-            - name: ngircd-port
+            - name: dhbw-irc-port
               containerPort: 6667
           volumeMounts:
-            - name: ngircd-data
-              mountPath: /config
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: Europe/Berlin
+            - name: dhbw-irc-data
+              mountPath: /ircd
       volumes:
-        - name: ngircd-data
+        - name: dhbw-irc-data
           persistentVolumeClaim:
-            claimName: ngircd-pvc
+            claimName: dhbw-irc-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ngircd-service
+  name: dhbw-irc-service
   labels:
-    app: ngircd
+    app: dhbw-irc
 spec:
   selector:
-    app: ngircd
+    app: dhbw-irc
   ports:
-    - name: ngircd-port
+    - name: dhbw-irc-port
       protocol: TCP
       port: 6667
-      targetPort: ngircd-port
+      targetPort: dhbw-irc-port
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: ngircd
-  namespace: ngircd
+  name: dhbw-irc
+  namespace: dhbw-irc
 spec:
   entryPoints:
     - irc
   routes:
-    - match: HostSNI(`irc.dominikstahl.dev`)
+    - match: HostSNI(`dhbw-irc.dominikstahl.dev`)
       services:
-        - name: ngircd-service
+        - name: dhbw-irc-service
           port: 6667
   tls: {}
