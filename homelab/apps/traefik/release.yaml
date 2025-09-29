@@ -21,8 +21,6 @@ spec:
     service:
       type: LoadBalancer
       externalTrafficPolicy: Local
-      spec:
-        loadBalancerIP: 10.96.0.205
     ports:
       websecure:
         http3:
