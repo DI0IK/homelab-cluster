@@ -59,7 +59,6 @@ spec:
       protocol: TCP
       port: 6697
       targetPort: znc-port
-  type: LoadBalancer
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
