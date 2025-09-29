@@ -42,9 +42,9 @@ spec:
             - image_proxy
             - query_in_title
         hostnames:
-          replace:
-            '(.*\.)?youtube\.com$': "invidious.dominikstahl.dev"
-            '(.*\.)?youtu\.be$': "invidious.dominikstahl.dev"
+          #replace:
+          #  '(.*\.)?youtube\.com$': "invidious.dominikstahl.dev"
+          #  '(.*\.)?youtu\.be$': "invidious.dominikstahl.dev"
           #     '(.*\.)?reddit\.com$': 'teddit.example.com'
           #     '(.*\.)?redd\.it$': 'teddit.example.com'
           #     '(www\.)?twitter\.com$': 'nitter.example.com'
@@ -79,5 +79,6 @@ spec:
         name: configmap-searxng-limiter
         mountPath: /etc/searxng/limiter.toml
         subPath: limiter.toml
+        readOnly: true
     redis:
       enabled: true
