@@ -1,0 +1,28 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: searxng-ingress
+  namespace: searxng
+  labels:
+    app.kubernetes.io/name: searxng
+  annotations:
+    gethomepage.dev/href: "https://searxng.dominikstahl.dev"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "Searxng is a free internet metasearch engine, which aggregates results from various search services and databases. It is a fork of the Searx project."
+    gethomepage.dev/group: System
+    gethomepage.dev/icon: searxng
+    gethomepage.dev/app: searxng
+    gethomepage.dev/name: searxng
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=searxng"
+    gethomepage.dev/allowGroups: searxng
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`search.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: searxng
+          kind: Service
+          port: http
