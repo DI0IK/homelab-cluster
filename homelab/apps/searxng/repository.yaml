@@ -1,8 +1,14 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: searxng
   namespace: searxng
 spec:
-  interval: 5m
-  url: https://charts.searxng.org
+  interval: 12h
+  url: oci://oci.trueforge.org/truecharts/searxng
+  ref:
+    semver: "10.7.0"
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy

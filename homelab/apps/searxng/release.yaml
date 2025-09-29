@@ -5,13 +5,9 @@ metadata:
   namespace: searxng
 spec:
   releaseName: searxng
-  chart:
-    spec:
-      chart: searxng
-      version: "1.0.1"
-      sourceRef:
-        kind: HelmRepository
-        name: searxng
+  chartRef:
+    kind: OCIRepository
+    name: searxng
   interval: 50m
   install:
     remediation:
