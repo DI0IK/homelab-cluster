@@ -4,5 +4,6 @@ namespace: arr
 resources:
   - ingress.yaml
   - persistentvolumeclaim.yaml
+  - pia-credentials.yaml
   - deployment.yaml
   - service.yaml
