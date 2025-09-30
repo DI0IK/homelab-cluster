@@ -22,4 +22,4 @@ spec:
       kind: Rule
       services:
         - name: homelab-jellyfin
-          port: service
+          port: http
