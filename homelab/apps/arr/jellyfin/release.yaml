@@ -23,9 +23,8 @@ spec:
       tag: "10.10.7"
     persistence:
       media:
-        enabled: false
+        enabled: true
         readOnly: true
-        type: pvc
         existingClaim: media-pvc
       config:
         enabled: true
