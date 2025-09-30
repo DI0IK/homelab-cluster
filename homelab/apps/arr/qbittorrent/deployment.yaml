@@ -24,6 +24,10 @@ spec:
       containers:
         - name: qbittorrent
           image: ghcr.io/hotio/qbittorrent
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
           ports:
             - containerPort: 8080
               protocol: TCP
