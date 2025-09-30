@@ -14,71 +14,7 @@ spec:
       retries: 3
     crds: Create
   values:
-    env:
-      INSTANCE_NAME: searxng
-      BASE_URL: https://searxng.dominikstahl.dev
-      BIND_ADDRESS: "0.0.0.0:8080"
-    searxng:
-      config:
-        search:
-          formats:
-            - html
-            - json
-          autocomplete: "duckduckgo"
-        preferences:
-          lock:
-            # - categories
-            # - language
-            - autocomplete
-            - favicon
-            # - safesearch
-            # - method
-            - doi_resolver
-            # - locale
-            # - theme
-            # - results_on_new_tab
-            # - infinite_scroll
-            # - search_on_category_select
-            - image_proxy
-            - query_in_title
-        hostnames:
-          #replace:
-          #  '(.*\.)?youtube\.com$': "invidious.dominikstahl.dev"
-          #  '(.*\.)?youtu\.be$': "invidious.dominikstahl.dev"
-          #     '(.*\.)?reddit\.com$': 'teddit.example.com'
-          #     '(.*\.)?redd\.it$': 'teddit.example.com'
-          #     '(www\.)?twitter\.com$': 'nitter.example.com'
-          #   remove:
-          #     - '(.*\.)?facebook.com$'
-          low_priority:
-            - '(.*\.)?google(\..*)?$'
-          high_priority:
-            - '(.*\.)?wikipedia.org$'
-        ui:
-          theme_args:
-            simple_style: dark
-        server:
-          limiter: false
-          image_proxy: true
-          bind_address: "0.0.0.0:8080"
-        redis:
-          url: redis://@homelab-searxng-redis:6379/0
-        enabled_plugins:
-          - "Basic Calculator"
-          - "Hash plugin"
-          - "Self Information"
-          - "Tracker URL remover"
-          - "Unit converter plugin"
-          - "Hostnames plugin"
-          - "Open Access DOI rewrite"
-          # - 'Tor check plugin'
     persistence:
-      limiter:
-        enabled: true
-        type: configMap
-        name: configmap-searxng-limiter
-        mountPath: /etc/searxng/limiter.toml
-        subPath: limiter.toml
-        readOnly: true
-    redis:
-      enabled: true
+      config:
+        annotations:
+          nfs.io/storage-path: config
