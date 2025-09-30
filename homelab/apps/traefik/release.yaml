@@ -18,6 +18,8 @@ spec:
       retries: 3
     crds: Create
   values:
+    image:
+      tag: v3.5.1
     service:
       type: LoadBalancer
       externalTrafficPolicy: Local
