@@ -1,0 +1,25 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jellyfin
+  namespace: arr
+  annotations:
+    gethomepage.dev/href: "https://jellyfin.dominikstahl.dev"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "Jellyfin is the Free Software Media System that puts you in control of managing and streaming your media."
+    gethomepage.dev/group: Media
+    gethomepage.dev/icon: jellyfin
+    gethomepage.dev/app: Jellyfin
+    gethomepage.dev/name: Jellyfin
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=jellyfin"
+    gethomepage.dev/allowGroups: Arr Users
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jellyfin.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: homelab-jellyfin
+          port: service

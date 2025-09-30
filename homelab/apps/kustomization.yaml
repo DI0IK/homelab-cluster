@@ -11,3 +11,4 @@ resources:
   - ./metallb
   - ./searxng
   # - ./debugging
+  - ./arr
