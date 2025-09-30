@@ -27,6 +27,13 @@ spec:
         readOnly: true
         type: pvc
         existingClaim: media-pvc
+      config:
+        enabled: true
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        annotations:
+          nfs.io/storage-path: jellyfin
+        storageClass: nfs-client
     securityContext:
       capabilities:
         add:
