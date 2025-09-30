@@ -3,11 +3,11 @@ kind: Kustomization
 resources:
   - ./traefik
   - ./wireguard
-  #  - ./flux-capacitor
+  # - ./flux-capacitor
   - ./logging
   - ./znc
   - ./n8n
   - ./dhbw-irc
   - ./metallb
   - ./searxng
-  - ./debugging
+  # - ./debugging
