@@ -10,4 +10,4 @@ resources:
   - ./dhbw-irc
   - ./metallb
   - ./searxng
-  - ./debugger
+  - ./debugging
