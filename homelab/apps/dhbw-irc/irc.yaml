@@ -75,5 +75,5 @@ spec:
         - name: dhbw-irc-service
           port: 6667
           proxyProtocol:
-            version: 1
+            version: 2
   tls: {}
