@@ -18,3 +18,4 @@ spec:
       config:
         annotations:
           nfs.io/storage-path: config
+        storageClass: nfs-client
