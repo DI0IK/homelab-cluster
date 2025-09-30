@@ -25,4 +25,4 @@ spec:
       services:
         - name: searxng
           kind: Service
-          port: http
+          port: main
