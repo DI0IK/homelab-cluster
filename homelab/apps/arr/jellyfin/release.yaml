@@ -36,8 +36,6 @@ spec:
         storageClass: nfs-client
     securityContext:
       capabilities:
-        add:
-          - "SYS_ADMIN"
         drop:
           - "ALL"
       privileged: false
