@@ -1,0 +1,24 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cloudnative-pg
+  namespace: cloudnative-pg
+spec:
+  releaseName: cloudnative-pg
+  chart:
+    spec:
+      chart: cloudnative-pg
+      version: "2025.8.4"
+      sourceRef:
+        kind: HelmRepository
+        name: cloudnative-pg
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
+    crds: Create
+  values:
+    monitoring:
+      podMonitorEnabled: true
+      grafanaDashboard:
+        create: true
