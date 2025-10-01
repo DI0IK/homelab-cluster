@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
   - sealed-secrets.yaml
   - nfs-subdir-external-provisioner.yaml
-  - nfs-subdir-external-provisioner-cnpg.yaml
   - cert-manager.yaml
   - etcd.yaml
