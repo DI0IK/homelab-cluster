@@ -23,7 +23,7 @@ spec:
             value: "1"
       containers:
         - name: qbittorrent
-          image: ghcr.io/hotio/qbittorrent
+          image: ghcr.io/hotio/qbittorrent:release-5.1.2
           securityContext:
             capabilities:
               add:
@@ -43,7 +43,7 @@ spec:
             - name: UMASK
               value: "002"
             - name: TZ
-              value: "Etc/UTC"
+              value: "Europe/Berlin"
             - name: WEBUI_PORTS
               value: "8080/tcp,8080/udp"
             - name: LIBTORRENT

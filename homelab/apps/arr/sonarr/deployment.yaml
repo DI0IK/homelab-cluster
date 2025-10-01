@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: arr
+  labels:
+    app: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: ghcr.io/hotio/sonarr:release-4.0.15.2941
+          ports:
+            - containerPort: 8989
+              protocol: TCP
+              name: webui
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK
+              value: "002"
+            - name: TZ
+              value: "Europe/Berlin"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: data-volume
+              mountPath: /data
+            - name: sonarr-config-xml
+              mountPath: /config/config.xml
+              subPath: config.xml
+      volumes:
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: sonarr-config-pvc
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: media-pvc
+        - name: sonarr-config-xml
+          configMap:
+            name: sonarr-config-xml
+      restartPolicy: Always
