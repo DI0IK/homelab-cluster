@@ -6,7 +6,7 @@ resources:
   # - ./flux-capacitor
   - ./logging
   - ./znc
-  - ./n8n
+  # - ./n8n
   - ./dhbw-irc
   - ./metallb
   - ./searxng

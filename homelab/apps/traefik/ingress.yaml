@@ -4,18 +4,6 @@ kind: IngressRoute
 metadata:
   name: traefik-dashboard
   namespace: traefik
-  annotations:
-    gethomepage.dev/href: "https://traefik.dominikstahl.dev"
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/description: "Traefik Dashboard"
-    gethomepage.dev/group: System
-    gethomepage.dev/icon: traefik
-    gethomepage.dev/app: traefik
-    gethomepage.dev/name: Traefik Dashboard
-    gethomepage.dev/pod-selector: "app.kubernetes.io/name=traefik"
-    gethomepage.dev/allowGroups: Traefik
-    gethomepage.dev/widget.type: "traefik"
-    gethomepage.dev/widget.url: "http://homelab-traefik.traefik.svc"
 spec:
   entryPoints:
     - websecure

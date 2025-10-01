@@ -6,16 +6,6 @@ metadata:
   namespace: n8n
   labels:
     app.kubernetes.io/name: n8n
-  annotations:
-    gethomepage.dev/href: "https://n8n.dominikstahl.dev"
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/description: "n8n is a free and open node-based Workflow Automation Tool. It enables you to connect anything to everything via its open, fair-code model."
-    gethomepage.dev/group: System
-    gethomepage.dev/icon: n8n
-    gethomepage.dev/app: n8n
-    gethomepage.dev/name: n8n
-    gethomepage.dev/pod-selector: "app.kubernetes.io/name=n8n"
-    gethomepage.dev/allowGroups: n8n
 spec:
   entryPoints:
     - websecure
