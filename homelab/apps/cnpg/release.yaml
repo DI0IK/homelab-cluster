@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: cloudnative-pg
-      version: "2025.8.4"
+      version: "0.26.0"
       sourceRef:
         kind: HelmRepository
         name: cloudnative-pg
