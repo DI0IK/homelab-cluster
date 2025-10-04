@@ -17,11 +17,6 @@ data:
             add_header Access-Control-Allow-Origin *;
         }
 
-        location /boss_stats.json {
-            root /usr/share/nginx/html/znc-data/modules/propool;
-            add_header Access-Control-Allow-Origin *;
-        }
-
         location / {
             deny all;
         }
