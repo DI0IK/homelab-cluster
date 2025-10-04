@@ -17,6 +17,12 @@ data:
             add_header Access-Control-Allow-Origin *;
         }
 
+        location /quest_stats/ {
+            alias /usr/share/nginx/html/znc-data/modules/quest_tracker/;
+            autoindex on;
+            add_header Access-Control-Allow-Origin *;
+        }
+
         location / {
             deny all;
         }
