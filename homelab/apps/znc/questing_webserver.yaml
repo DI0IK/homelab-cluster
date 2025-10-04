@@ -1,0 +1,90 @@
+---
+apiVersion: apps/v1
+kind: ConfigMap
+metadata:
+  name: questing-webserver-nginx-config
+  labels:
+    app: questing-webserver
+  namespace: znc
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+
+        location /quest_stats.json {
+            root /usr/share/nginx/html/znc-data/modules/propool;
+        }
+
+        location /boss_stats.json {
+            root /usr/share/nginx/html/znc-data/modules/propool;
+        }
+
+        location / {
+            deny all;
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: questing-webserver
+  labels:
+    app: questing-webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: questing-webserver
+  template:
+    metadata:
+      labels:
+        app: questing-webserver
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: znc-data
+              mountPath: /usr/share/nginx/html/znc-data
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: znc-data
+          persistentVolumeClaim:
+            claimName: znc-pvc
+        - name: nginx-config
+          configMap:
+            name: questing-webserver-nginx-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: questing-webserver-service
+  labels:
+    app: questing-webserver
+spec:
+  selector:
+    app: questing-webserver
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: questing-webserver-ingress
+  namespace: znc
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`questing-data.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: questing-webserver-service
+          kind: Service
+          port: 80
