@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glance
+  labels:
+    app: glance
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: glance
+  template:
+    metadata:
+      labels:
+        app: glance
+    spec:
+      containers:
+        - name: glance
+          image: glanceapp/glance
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: glance-data
+              mountPath: /app/config/glance.yml
+              readOnly: true
+              subPath: glance.yml
+      volumes:
+        - name: glance-data
+          configMap:
+            name: glance-config
+            items:
+              - key: glance.yml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glance-service
+  labels:
+    app: glance
+spec:
+  selector:
+    app: glance
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: glance
+  namespace: glance
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`glance.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: glance-service
+          port: http

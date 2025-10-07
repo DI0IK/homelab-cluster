@@ -13,3 +13,4 @@ resources:
   - ./searxng
   # - ./debugging
   - ./arr
+  - ./glance
