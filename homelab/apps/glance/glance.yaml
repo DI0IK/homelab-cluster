@@ -33,8 +33,6 @@ spec:
         - name: glance-data
           configMap:
             name: glance-config
-            items:
-              - key: glance.yml
 ---
 apiVersion: v1
 kind: Service
