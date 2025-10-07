@@ -10,5 +10,12 @@
   },
   "kubernetes": {
     "managerFilePatterns": ["/apps/.+\\.ya?ml$/"]
-  }
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": ["ghcr.io/hotio/**"],
+      "versioning": "regex:^release-(?<version>.*)$",
+      "groupName": "hotio container images"
+    }
+  ]
 }
