@@ -14,7 +14,8 @@
   "packageRules": [
     {
       "matchPackageNames": ["ghcr.io/hotio/**"],
-      "versioning": "regex:^release-(?<version>.*)$",
+      "extractVersion": "^release-(.*)$",
+      "versioning": "semver",
       "groupName": "hotio container images"
     }
   ]
