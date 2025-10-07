@@ -26,7 +26,7 @@ spec:
               containerPort: 8000
           env:
             - name: SUBSONIC_URL
-              value:
+              value: "https://navidrome.dominikstahl.dev/navidrome"
             - name: SUBSONIC_USERNAME
               valueFrom:
                 secretKeyRef:
