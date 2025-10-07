@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: subsonic-proxy
-          image: ghcr.io/somecodecat/subsonic-proxy:latest
-          imagePullPolicy: Always
+          image: ghcr.io/somecodecat/subsonic-proxy:v0.1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8000
