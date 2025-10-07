@@ -63,6 +63,262 @@ data:
                   - type: reddit
                     subreddit: selfhosted
                     show-thumbnails: true
+              
+              - type: custom-api
+                hide-header: true
+                title: Navidrome Library
+                cache: 1h
+                url: http://subsonic-proxy-service:8000/stats
+                headers:
+                  X-Api-Key: 062da08ac2a8a0c4a8f08a60f9fb651d0d0696cfed52d0d39873f0ad5fb9e88b
+                subrequests:
+                  artists:
+                    url: http://subsonic-proxy-service:8000/artists
+                    headers:
+                      X-Api-Key: 062da08ac2a8a0c4a8f08a60f9fb651d0d0696cfed52d0d39873f0ad5fb9e88b
+                  albums:
+                    url: http://subsonic-proxy-service:8000/albums
+                    headers:
+                      X-Api-Key: 062da08ac2a8a0c4a8f08a60f9fb651d0d0696cfed52d0d39873f0ad5fb9e88b
+                  songs:
+                    url: http://subsonic-proxy-service:8000/songs
+                    headers:
+                      X-Api-Key: 062da08ac2a8a0c4a8f08a60f9fb651d0d0696cfed52d0d39873f0ad5fb9e88b
+
+                options:
+                  # --- Main Feature Toggles ---
+                  hover_enabled: true # Enable/disable all hover tooltips
+                  main_links_enabled: true # Make main stat blocks clickable to open Subsonic
+
+                  # --- Tooltip Feature Toggles ---
+                  search_enabled: true # Show a search bar in tooltips
+                  sort_enabled: true # Show a sort button in tooltips
+                  tooltip_links_enabled: true # Make items inside tooltips clickable
+                  context_text_enabled: true # Show context (e.g., artist for albums, album for songs)
+
+                  # --- Required for Links ---
+                  subsonic_server_url: https://navidrome.dominikstahl.dev/navidrome
+
+                template: |
+                  {{- /* Widget Configuration */ -}}
+                  {{- $baseURL := .Options.StringOr "subsonic_server_url" "#" -}}
+                  {{- $hoverEnabled := .Options.BoolOr "hover_enabled" true -}}
+                  {{- $mainLinksEnabled := .Options.BoolOr "main_links_enabled" true -}}
+                  {{- $searchEnabled := .Options.BoolOr "search_enabled" true -}}
+                  {{- $sortEnabled := .Options.BoolOr "sort_enabled" true -}}
+                  {{- $tooltipLinksEnabled := .Options.BoolOr "tooltip_links_enabled" true -}}
+                  {{- $contextEnabled := .Options.BoolOr "context_text_enabled" true -}}
+                  <style>
+                    .stat-container > * {
+                      text-decoration: none; color: inherit; display: block; border-radius: 6px;
+                      transition: background-color 0.2s; flex: 1; margin: 0 4px;
+                    }
+                    .stat-link { cursor: pointer; }
+                    .stat-link:hover { background-color: var(--color-background-hover); }
+                    .stat-block { position: relative; {{ if $hoverEnabled }}cursor: pointer;{{ end }} }
+                    .tooltip {
+                      visibility: hidden; opacity: 0; position: fixed;
+                      width: 300px; max-height: 308px; overflow-y: hidden;
+                      display: flex; flex-direction: column;
+                      background-color: var(--color-background); color: var(--color-text);
+                      border: 1px solid var(--color-border); border-radius: 6px;
+                      z-index: 999; transition: opacity 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+                    }
+                    .tooltip.show { visibility: visible; opacity: 1; }
+                    .tooltip-header {
+                      display: flex; align-items: center; gap: 8px;
+                      padding: 4px 8px; border-bottom: 1px solid var(--color-border);
+                      flex-shrink: 0; background-color: var(--color-background);
+                      position: sticky; top: 0; z-index: 1;
+                    }
+                    .tooltip-search {
+                      flex-grow: 1; background-color: var(--color-interactive-background);
+                      color: var(--color-text); border: 1px solid var(--color-border);
+                      border-radius: 4px; padding: 2px 6px; font-size: 0.9em;
+                    }
+                    .tooltip-header button {
+                      background-color: var(--color-interactive-background); color: var(--color-text);
+                      border: 1px solid var(--color-border); border-radius: 4px;
+                      padding: 2px 8px; font-size: 0.8em; cursor: pointer; white-space: nowrap;
+                    }
+                    .tooltip-header button:hover { background-color: var(--color-interactive-background-hover); }
+                    .tooltip-content { padding: 8px; font-size: 0.9em; overflow-y: auto; }
+                    .tooltip-content ul { list-style: none; padding: 0; margin: 0; }
+                    .tooltip-content li {
+                      display: flex; justify-content: space-between; align-items: center;
+                      padding: 5px 4px; border-bottom: 1px solid var(--color-border-subtle); border-radius: 3px;
+                    }
+                    .tooltip-content li:last-child { border-bottom: none; }
+                    .tooltip-content li:hover { background-color: var(--color-background-hover); }
+                    .tooltip-content a { color: inherit; text-decoration: none; }
+                    .tooltip-content a:hover { text-decoration: underline; }
+                    .tooltip-content .full-width-link, .tooltip-content .item-link {
+                      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1;
+                    }
+                    .tooltip-content .context-link, .tooltip-content .context-text {
+                      font-size: 0.9em; opacity: 0.7; margin-left: 10px;
+                      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0;
+                    }
+                  </style>
+
+                  <img src=x style="display:none" onerror="
+                    // --- Global State & Config ---
+                    window.hoverIsEnabled = {{ $hoverEnabled }};
+                    window.tooltipState = { hideTimeout: null, currentTooltip: null, sortDir: 'asc' };
+
+                    // --- Helper Functions ---
+                    window.openLink = function(type) {
+                      const baseUrl = '{{ $baseURL }}';
+                      if (baseUrl && baseUrl !== '#') {
+                        let url = '#';
+                        if (type === 'artists') { url = `${baseUrl}/app/#/artist`; }
+                        else if (type === 'albums') { url = `${baseUrl}/app/#/album/all`; }
+                        else if (type === 'songs') { url = `${baseUrl}/app/#/song`; }
+                        window.open(url, '_blank');
+                      }
+                    };
+
+                    window.filterList = function(type) {
+                      const searchTerm = document.getElementById(type + '-search').value.toLowerCase();
+                      const items = document.querySelectorAll('#' + type + '-tooltip ul li');
+                      items.forEach(li => {
+                        li.style.display = li.textContent.toLowerCase().includes(searchTerm) ? 'flex' : 'none';
+                      });
+                    };
+
+                    window.sortList = function(type) {
+                      const ul = document.querySelector('#' + type + '-tooltip ul');
+                      if (!ul) return;
+                      const items = Array.from(ul.querySelectorAll('li'));
+                      window.tooltipState.sortDir = window.tooltipState.sortDir === 'asc' ? 'desc' : 'asc';
+                      items.sort((a, b) => {
+                        const textA = a.textContent.trim().toLowerCase();
+                        const textB = b.textContent.trim().toLowerCase();
+                        return window.tooltipState.sortDir === 'asc' ? textA.localeCompare(textB) : textB.localeCompare(textA);
+                      });
+                      ul.innerHTML = '';
+                      items.forEach(li => ul.appendChild(li));
+                      document.getElementById(type + '-sort-btn').textContent = window.tooltipState.sortDir === 'asc' ? 'A-Z' : 'Z-A';
+                    };
+
+                    // --- Tooltip Management ---
+                    window.showTooltip = function(type, element) {
+                      if (!window.hoverIsEnabled) return;
+                      if (window.tooltipState.currentTooltip) window.tooltipState.currentTooltip.classList.remove('show');
+                      clearTimeout(window.tooltipState.hideTimeout);
+                      const tooltip = document.getElementById(type + '-tooltip');
+                      if (!tooltip) return;
+
+                      // Reset search field on show
+                      const searchInput = document.getElementById(type + '-search');
+                      if (searchInput && searchInput.value) {
+                        searchInput.value = '';
+                        filterList(type);
+                      }
+
+                      const rect = element.getBoundingClientRect(), tooltipWidth = 300, tooltipHeight = 308, margin = 8;
+                      let top = rect.bottom + margin, left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+                      if (top + tooltipHeight > window.innerHeight) { top = rect.top - tooltipHeight - margin; }
+                      if (left < margin) { left = margin; } else if (left + tooltipWidth > window.innerWidth - margin) { left = window.innerWidth - tooltipWidth - margin; }
+
+                      tooltip.style.top = top + 'px';
+                      tooltip.style.left = left + 'px';
+                      tooltip.classList.add('show');
+                      window.tooltipState.currentTooltip = tooltip;
+                    };
+
+                    window.hideTooltip = function() {
+                      window.tooltipState.hideTimeout = setTimeout(() => {
+                        if (window.tooltipState.currentTooltip) {
+                          window.tooltipState.currentTooltip.classList.remove('show');
+                          window.tooltipState.currentTooltip = null;
+                        }
+                      }, 300);
+                    };
+                  ">
+
+                  <!-- Main Stat Blocks -->
+                  <div class="flex justify-around text-center stat-container">
+                    <div class="stat-link" {{ if $mainLinksEnabled }}onclick="openLink('artists')"{{ end }} {{ if $hoverEnabled }}onmouseenter="showTooltip('artists', this)" onmouseleave="hideTooltip()"{{ end }}>
+                      <div class="stat-block">
+                        <div class="color-highlight size-h3">{{ .JSON.Int `artistCount` | formatNumber }}</div>
+                        <div class="size-h6">ARTISTS</div>
+                      </div>
+                    </div>
+
+                    <div class="stat-link" {{ if $mainLinksEnabled }}onclick="openLink('albums')"{{ end }} {{ if $hoverEnabled }}onmouseenter="showTooltip('albums', this)" onmouseleave="hideTooltip()"{{ end }}>
+                      <div class="stat-block">
+                        <div class="color-highlight size-h3">{{ .JSON.Int `albumCount` | formatNumber }}</div>
+                        <div class="size-h6">ALBUMS</div>
+                      </div>
+                    </div>
+
+                    <div class="stat-link" {{ if $mainLinksEnabled }}onclick="openLink('songs')"{{ end }} {{ if $hoverEnabled }}onmouseenter="showTooltip('songs', this)" onmouseleave="hideTooltip()"{{ end }}>
+                      <div class="stat-block">
+                        <div class="color-highlight size-h3">{{ .JSON.Int `songCount` | formatNumber }}</div>
+                        <div class="size-h6">SONGS</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tooltip Definitions -->
+                  {{ if $hoverEnabled }}
+                  <div id="artists-tooltip" class="tooltip" onmouseenter="clearTimeout(window.tooltipState.hideTimeout)" onmouseleave="hideTooltip()">
+                    {{ if or $searchEnabled $sortEnabled }}<div class="tooltip-header">{{ if $searchEnabled }}<input type="text" id="artists-search" class="tooltip-search" placeholder="Search..." onkeyup="filterList('artists')">{{ end }}{{ if $sortEnabled }}<button id="artists-sort-btn" onclick="sortList('artists')">A-Z</button>{{ end }}</div>{{ end }}
+                    <div class="tooltip-content">
+                      <ul>
+                        {{- range (.Subrequest "artists").JSON.Value }}
+                          <li>
+                            {{- if $tooltipLinksEnabled }}
+                              <a href="{{ $baseURL }}/#/artist/{{ index . "id" }}/show" target="_blank" class="full-width-link"><span class="item-name">{{ index . "name" }}</span></a>
+                            {{- else }}
+                              <span class="full-width-link item-name">{{ index . "name" }}</span>
+                            {{- end }}
+                          </li>
+                        {{- end }}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div id="albums-tooltip" class="tooltip" onmouseenter="clearTimeout(window.tooltipState.hideTimeout)" onmouseleave="hideTooltip()">
+                    {{ if or $searchEnabled $sortEnabled }}<div class="tooltip-header">{{ if $searchEnabled }}<input type="text" id="albums-search" class="tooltip-search" placeholder="Search..." onkeyup="filterList('albums')">{{ end }}{{ if $sortEnabled }}<button id="albums-sort-btn" onclick="sortList('albums')">A-Z</button>{{ end }}</div>{{ end }}
+                    <div class="tooltip-content">
+                      <ul>
+                        {{- range (.Subrequest "albums").JSON.Value }}
+                          <li>
+                            {{- if $tooltipLinksEnabled }}<a class="item-link" href="{{ $baseURL }}/#/album/{{ index . "id" }}/show" target="_blank">{{ index . "name" }}</a>{{ else }}<span class="item-link">{{ index . "name" }}</span>{{ end -}}
+                            {{- if and $contextEnabled (index . "artistId") }}
+                              {{- if $tooltipLinksEnabled }}<a class="context-link" href="{{ $baseURL }}/#/artist/{{ index . "artistId" }}/show" target="_blank">{{ index . "artistName" }}</a>{{ else }}<span class="context-text">{{ index . "artistName" }}</span>{{ end -}}
+                            {{- end }}
+                          </li>
+                        {{- end }}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div id="songs-tooltip" class="tooltip" onmouseenter="clearTimeout(window.tooltipState.hideTimeout)" onmouseleave="hideTooltip()">
+                    {{ if or $searchEnabled $sortEnabled }}<div class="tooltip-header">{{ if $searchEnabled }}<input type="text" id="songs-search" class="tooltip-search" placeholder="Search..." onkeyup="filterList('songs')">{{ end }}{{ if $sortEnabled }}<button id="songs-sort-btn" onclick="sortList('songs')">A-Z</button>{{ end }}</div>{{ end }}
+                    <div class="tooltip-content">
+                      <ul>
+                        {{- range (.Subrequest "songs").JSON.Value }}
+                          <li>
+                            {{- if $tooltipLinksEnabled }}
+                              <a href="{{ $baseURL }}/#/album/{{ index . "albumId" }}/show" target="_blank" class="full-width-link">
+                                <span class="item-name">{{ index . "name" }}</span>
+                                {{- if and $contextEnabled (index . "context") }}<span class="context-text">{{ index . "context" }}</span>{{ end -}}
+                              </a>
+                            {{- else }}
+                              <span class="full-width-link">
+                                <span class="item-name">{{ index . "name" }}</span>
+                                {{- if and $contextEnabled (index . "context") }}<span class="context-text">{{ index . "context" }}</span>{{ end -}}
+                              </span>
+                            {{- end }}
+                          </li>
+                        {{- end }}
+                      </ul>
+                    </div>
+                  </div>
+                  {{ end }}
 
           - size: small
             widgets:
