@@ -3,5 +3,7 @@ kind: Kustomization
 namespace: glance
 resources:
   - namespace.yaml
+  - subsonic-credentials.yaml
+  - subsonic-proxy.yaml
   - glance-config.yaml
   - glance.yaml

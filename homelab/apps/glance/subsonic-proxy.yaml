@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subsonic-proxy
+  labels:
+    app: subsonic-proxy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: subsonic-proxy
+  template:
+    metadata:
+      labels:
+        app: subsonic-proxy
+    spec:
+      containers:
+        - name: subsonic-proxy
+          image: ghcr.io/somecodecat/subsonic-proxy:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: SUBSONIC_URL
+              value:
+            - name: SUBSONIC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: subsonic-credentials
+                  key: username
+            - name: SUBSONIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: subsonic-credentials
+                  key: password
+            - name: SUBSONIC_PROXY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: subsonic-credentials
+                  key: api-key
+            - name: CACHE_TIMEOUT_SECONDS
+              value: "900"
