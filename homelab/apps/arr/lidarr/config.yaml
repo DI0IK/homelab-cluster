@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lidarr-config-xml
+  namespace: arr
+data:
+  config.xml: |
+    <Config>
+      <BindAddress>*</BindAddress>
+      <Port>8989</Port>
+      <SslPort>9898</SslPort>
+      <EnableSsl>False</EnableSsl>
+      <LaunchBrowser>True</LaunchBrowser>
+      <ApiKey>976e9b24465c49f0bf51f1872d0e2093</ApiKey>
+      <AuthenticationMethod>External</AuthenticationMethod>
+      <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
+      <Branch>main</Branch>
+      <LogLevel>debug</LogLevel>
+      <SslCertPath></SslCertPath>
+      <SslCertPassword></SslCertPassword>
+      <UrlBase></UrlBase>
+      <InstanceName>Lidarr</InstanceName>
+      <UpdateMechanism>Docker</UpdateMechanism>
+    </Config>

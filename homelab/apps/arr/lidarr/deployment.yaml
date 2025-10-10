@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lidarr
+  namespace: arr
+  labels:
+    app: lidarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lidarr
+  template:
+    metadata:
+      labels:
+        app: lidarr
+    spec:
+      containers:
+        - name: lidarr
+          image: ghcr.io/hotio/lidarr:release-3.6.3
+          ports:
+            - containerPort: 8989
+              protocol: TCP
+              name: webui
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: UMASK
+              value: "002"
+            - name: TZ
+              value: "Europe/Berlin"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: data-volume
+              mountPath: /data
+            - name: lidarr-config-xml
+              mountPath: /config/config.xml
+              subPath: config.xml
+      volumes:
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: lidarr-config-pvc
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: media-pvc
+        - name: lidarr-config-xml
+          configMap:
+            name: lidarr-config-xml
+      restartPolicy: Always
