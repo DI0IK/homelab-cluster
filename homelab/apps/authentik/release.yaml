@@ -53,7 +53,11 @@ spec:
               name: authentik-db-app
               key: dbname
     redis:
-      enabled: false
+      enabled: true
+      master:
+        persistence:
+          annotations:
+            nfs.io/storage-path: redis
     server:
       metrics:
         enabled: true
