@@ -21,10 +21,37 @@ spec:
     authentik:
       error_reporting:
         enabled: true
+      postgres: ~
     global:
       envFrom:
         - secretRef:
             name: authentik-secrets
+      env:
+        - name: AUTHENTIK_POSTGRESQL__HOST
+          valueFrom:
+            secretKeyRef:
+              name: authentik-db-app
+              key: host
+        - name: AUTHENTIK_POSTGRESQL__PORT
+          valueFrom:
+            secretKeyRef:
+              name: authentik-db-app
+              key: port
+        - name: AUTHENTIK_POSTGRESQL__USER
+          valueFrom:
+            secretKeyRef:
+              name: authentik-db-app
+              key: user
+        - name: AUTHENTIK_POSTGRESQL__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: authentik-db-app
+              key: password
+        - name: AUTHENTIK_POSTGRESQL__NAME
+          valueFrom:
+            secretKeyRef:
+              name: authentik-db-app
+              key: database
     redis:
       enabled: false
     server:
