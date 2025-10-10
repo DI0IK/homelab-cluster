@@ -14,3 +14,4 @@ resources:
   # - ./debugging
   - ./arr
   - ./glance
+  - ./authentik
