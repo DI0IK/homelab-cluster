@@ -1,0 +1,93 @@
+data:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: assign-outposts-script
+    namespace: authentik
+data:
+  assign_outposts.py: |
+    import requests
+    import os
+    import sys
+
+    # --- Configuration ---
+    AUTHENTIK_URL = os.getenv("AUTHENTIK_URL")
+    API_TOKEN = os.getenv("AUTHENTIK_TOKEN")
+
+    # --- Script ---
+    if not all([AUTHENTIK_URL, API_TOKEN]):
+        print("ERROR: One or more environment variables are not set.")
+        print("Ensure AUTHENTIK_URL and AUTHENTIK_TOKEN are defined.")
+        sys.exit(1)
+
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    def find_embedded_outpost_uuid():
+        """Finds the UUID of the default embedded outpost."""
+        url = f"{AUTHENTIK_URL}/api/v3/outposts/instances/"
+        print("🔎 Searching for the embedded outpost...")
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            outposts = response.json().get('results', [])
+            
+            for outpost in outposts:
+                if outpost.get('managed') == 'goauthentik.io/outposts/embedded':
+                    outpost_uuid = outpost['pk']
+                    print(f"✅ Found embedded outpost with UUID: {outpost_uuid}")
+                    return outpost_uuid
+            
+            print("❌ ERROR: Default embedded outpost not found.")
+            return None
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Error communicating with authentik API: {e}")
+            return None
+
+    def get_all_proxy_providers():
+        """Fetches all providers from the authentik API and filters for Proxy Providers."""
+        proxy_provider_pks = []
+        url = f"{AUTHENTIK_URL}/api/v3/providers/all/"
+        
+        print("📚 Fetching all available providers and filtering for Proxy Providers...")
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            providers = response.json()
+            
+            for provider in providers:
+                # This is the key change: only select providers of the correct type
+                if provider.get('component') == 'authentik_providers_proxy.proxyprovider':
+                    proxy_provider_pks.append(provider['pk'])
+                    print(f"    -> Matched Proxy Provider: {provider.get('name')} (ID: {provider['pk']})")
+
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Error fetching providers: {e}")
+            return None
+                
+        print(f"Found {len(proxy_provider_pks)} matching Proxy Providers.")
+        return proxy_provider_pks
+
+    def update_outpost_providers(outpost_uuid, provider_pks):
+        """Updates the specified outpost with a new list of provider PKs."""
+        url = f"{AUTHENTIK_URL}/api/v3/outposts/instances/{outpost_uuid}/"
+        payload = {"providers": provider_pks}
+        
+        print(f"🚀 Updating outpost {outpost_uuid}...")
+        try:
+            response = requests.patch(url, headers=headers, json=payload, timeout=10)
+            response.raise_for_status()
+            print("🎉 Outpost updated successfully!")
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Error updating outpost: {e}")
+            print(f"Response body: {response.text}")
+            sys.exit(1)
+
+    if __name__ == "__main__":
+        outpost_id = find_embedded_outpost_uuid()
+        if outpost_id:
+            provider_ids = get_all_proxy_providers()
+            if provider_ids is not None:
+                update_outpost_providers(outpost_id, provider_ids)

@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: assign-authentik-outposts
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: assign-outposts
+              image: python:3.11-slim
+              env:
+                - name: AUTHENTIK_URL
+                  value: http://authentik-server:80
+                - name: AUTHENTIK_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: authentik-secrets
+                      key: AUTHENTIK_BOOTSTRAP_TOKEN
+              command: ["python", "/scripts/assign_outposts.py"]
+              volumeMounts:
+                - name: script-volume
+                  mountPath: /scripts
+          restartPolicy: OnFailure
+          volumes:
+            - name: script-volume
+              configMap:
+                name: assign-outposts-script

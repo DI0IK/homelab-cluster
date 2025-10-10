@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: authentik
 resources:
   - namespace.yaml
+  - all_blueprints.yaml
   - database.yaml
   - authentik-config.yaml
   - ingress.yaml
