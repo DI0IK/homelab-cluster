@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
             - name: assign-outposts
-              image: python:3.11-slim
+              image: python:3.14-slim
               env:
                 - name: AUTHENTIK_URL
                   value: http://authentik-server:80
