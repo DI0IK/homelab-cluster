@@ -1,22 +1,14 @@
-{
-  "kind": "SealedSecret",
-  "apiVersion": "bitnami.com/v1alpha1",
-  "metadata": {
-    "name": "cloudflare-api-token-secret",
-    "namespace": "traefik",
-    "creationTimestamp": null
-  },
-  "spec": {
-    "template": {
-      "metadata": {
-        "name": "cloudflare-api-token-secret",
-        "namespace": "traefik",
-        "creationTimestamp": null
-      },
-      "type": "Opaque"
-    },
-    "encryptedData": {
-      "api-token": "AgCXUp8DfUuvzEumZ7Nryn9PgQmJPhZTXPFB7MooEtygntE/K+HZIBx4VTyMlOYcs1ELEo3mSiUSDgMq/5S0zht8KXXg3zChjzl1UV/6giz71v6wFsUZnCENFAwqZsXsuhkeN7KXXm42nhCPdbJ8BE54rgUCIL+Jvkfb4wIwAp7iq4Taxb6n9ibC7H2LS0vA+U7AzlHf7uFsoYfW6klgW/tKUKYlz+7BZHGc8fHnPEmlq3dlwulGNtEHzhJK7mtsHPBpuPeeAjikF89tz2/sibjzLyGIbqHpXQFY9vmybvlmBZ3eWNkAbwzlLtBC2KvILHXeWVQv4cx3JMRSdhmvt+ubdwa/iadWfZc1ZihvZNvgwjsUt2DvGarrbsvQRt/lfPidnT9h77yxocIIkzE7RnI1AZQmAT3k9gbQSvzIFtsi2EyefRx5EPIXR1at+nfJ6c4AwXWw7tE0Gk1O59Kq0POGyVuQWkrwdsVFrzWR6JQInTMab5mPLPsihIljbJdkMIbeKxhOuk8K/NFtd69A/0PGEIj4CsyubDS2y0vNyv2uIuWQwvAgq/0wi0Qvpn5jwPYRBZwv4XX+c3FNoP0hlw+LljdILqOxp+eHO4mxjhcLkxznolAFO2ADsdN78tQxuA3aV/BdTCps3O4EvQMs2YZXCyuivNmgm/IQ3011i2UvtRSBy9nAyVJA1icscmoSmbu/SFH2mhwZEeIYw3HX+v0n7sSqjyefibuYsUsmgLs2q1dtl+299viu"
-    }
-  }
-}
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: cloudflare-api-token-secret
+  namespace: traefik
+spec:
+  encryptedData:
+    api-token: AgCMUpOdreHqI5fZpfeytwKWyx+OImiSKslTJ5TxxxNChOShpQarEdlPX8W/GBedEZpisnoQ54QdhTg8UjtESoRP1CdofhZn3o5Ku/u6HCEUgqZCQ7MauPMQ9oRa/1Lhb8r6up4f8TMy9R5ZQ6apUR9f/8LVdUPvbGIMzA6t23j9xrDRnP65k9oxeT2C45zHe5/HGzoU0Q2BXplhI8aUFKP23+dRWSXmyXJ0CDmBSu/NvewFVFh7HiExr+I5PaYJo/RhcgKrCr0ZE7pLYMLABpbc3Sis/7arKMJzUIxpF5IRhx7JNw9WwNGCMEHPHYzCstaFanMrOCd9ST9fnMApcs8UeLbSupLgbxgDfSGTFHErPXFS7xlBIf/cOUan2WaNm+lNEL0PBx6L2BQMeA1E7WsVj5uLw8i/L+t6LGBx8AbmTgEhPXet0fQyrR2IIlSgF47b/bVQpEux+/eWRsrFOteeoT7Ot0zU5RRbgnFERabOZCCKZzxPKcaStc0q0qYRhxLq8cpTfefUW8vKchOuSTl+YmTKJVaXEjEUSgNQw+BTm9Pc1GFwdzAzyP7ITlz6oPEhz2kNF+5Kbr58WebMdeNtLwfbf1FngOL4ZyUS4/c8FZ2E/QqDua7yiNFoCjKK3lPTRlc81X6yAGIIjINZ+5zha06tct6O4JAFRzqjTJF4eXdfmH5HJqE7a4Fd1HHeY3Ju6EODJn7LhT0OeJuP/+ZCbPJa0Y8FgfxUSG+nCRZu5HUIRn25p5Fv
+  template:
+    metadata:
+      name: cloudflare-api-token-secret
+      namespace: traefik
+    type: Opaque

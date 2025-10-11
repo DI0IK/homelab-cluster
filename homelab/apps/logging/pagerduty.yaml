@@ -1,22 +1,14 @@
-{
-  "kind": "SealedSecret",
-  "apiVersion": "bitnami.com/v1alpha1",
-  "metadata": {
-    "name": "pagerduty-secret",
-    "namespace": "logging",
-    "creationTimestamp": null
-  },
-  "spec": {
-    "template": {
-      "metadata": {
-        "name": "pagerduty-secret",
-        "namespace": "logging",
-        "creationTimestamp": null
-      },
-      "type": "Opaque"
-    },
-    "encryptedData": {
-      "service_key": "AgBAzYZXyxcefoWqDQ4aNU6h9z6FY+J4snIucc/y7eIJADqadrS9AY5hWaPlUud38UeKvfdj12cQI0/IYJXIOlIT3fKKUc/rFKTuY6zuxMdOlGMau3CVkjqihbrpCYztw1yPqD8mgRB9A1NVU/YkNE3nPO/NJAC+wKQG1U0ERwIM63HPNXz9tjDM2geYz3P/9mmcTTm0XMsYfv5XwrivvfmnO/lp7O3qfuzItWfb6q9FUR7ATH+47Jm05qqMH0UQmncM9amOiXimnsn7SwipuH12kQqPlDTVlHc5O9AAtDiaKyYiZP61DDlQQmOH64yiSEYGrxc688Wthx1OpI/MdCHptUsgw8xZbqo3qXc6UXVoAZHQJA2jPaQZm3iDzGZ0t4EbakURyy5PdFWrN+0Jzincj/4OK0EIU3HwPAA/CkO2VeldVfU6Jode09zSDnRHcwH/CQfNDMhOMVpNrnFmki5Z5dtoAwhaXYRjRcn8YXktQnysZVEaINSrnygu0VcktvlKRbKxc6+ulE2vfLe82aAAu6/G1+a/5laiNy639Ojlovks+/u3W7kgVmAaiSGi68IfDlwaj1MepHLtjzJzs3lD8C7g4bILAIMPw7gcdDeYB0QjIXOLRG3QWK1Y0hmyYCuP/al4NNtntKtkDpTxJb7Le0ZB/tvv/Eg8oao5vwWAQZSVPKzpoSXE+X79RmfUGuCAVLbIkviUwbfLXt3cWmA/v7Ajrn/5E3DAlW1xkMXI/g=="
-    }
-  }
-}
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: pagerduty-secret
+  namespace: logging
+spec:
+  encryptedData:
+    service_key: AgCRbLg0oiMTC2XH9Fu/hVqCLhZ0XC6St1f5ttJ3B6+d7SVfEYjKDpIuFgUUSoLu4fnckUWdSRd/x0TzRSTGSBc0R9Ghzc2W0w4D/wEBoJZn5GAq66x1fIZFGzyo98UrFLhKw852+V1i7ebrdUh21ZewYpjn7/CEcVoHfsr3D1T5BH6NTvJJJowP0PHFY4LMdXvPARyIJtktOsVlwEHJpdZXhQ+4p1kiwD6j89QZaB7ViFRpmVJjYi5ijV/oQMpR0/hnyvKAf9vJ01MGvhwH5t/v6VBicuJ4duzVYPNa75NY+/MbsLX+ByzHWbG6TnDUyDJrozxpZcVJYst6gpIF0oqgbvCeEgf2OF2gXIurFB+YIYCZA/UH8ypeaAmp4AA4YWWug2e6UF7F1+FYtaY5pBYABZ6hvbZDkSEzSYy8hJEkHTP3ja4VQbMM5Y91+2+LhtzWaDO7KvzU8o3ViKOpztEG7+csz0FpHPK4SU6+bRq/e3OmKDm42YCzylrVYaZqb3hjeE0akjSA4flgXLbdlNEj8lZAH7l1C/2DP1i83YIYj++XMbactoGFb2PUrhIq7/p4JfEaXrPir7o5NIGbEidjSuGkPyg/lgyWXu22ue0cYFPCWz9+0vO7XADsp2bUrJLdcDVtbQgtQvpck5SFBDihh95K4o8Cj75OJxDnEACds5kycoAk+onIReNFz9wwTGF0sfj7LX+NC9I1CIgGRXVZsgdhPe4/KLGhA4hCLn4gwg==
+  template:
+    metadata:
+      name: pagerduty-secret
+      namespace: logging
+    type: Opaque

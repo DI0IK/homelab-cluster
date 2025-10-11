@@ -1,21 +1,13 @@
-{
-  "kind": "SealedSecret",
-  "apiVersion": "bitnami.com/v1alpha1",
-  "metadata": {
-    "name": "traefik-wireguard-config",
-    "namespace": "wireguard",
-    "creationTimestamp": null
-  },
-  "spec": {
-    "template": {
-      "metadata": {
-        "name": "traefik-wireguard-config",
-        "namespace": "wireguard",
-        "creationTimestamp": null
-      }
-    },
-    "encryptedData": {
-      "wg0.conf": "AgAS+6AAUw+S5SIgvkPjxM6xieq2OxflA5YIAD3Ci1C8pa0UC+FfG7NAxm8h0ZuQbTwYFb6Z0fntv4bcxn5hiUt+WFwcNYZ2ZpBSY2o7x0CH//y7nh0LxMbGFwYvnVhApuqYbVSgzKw4EN/txalExezGFTaGO794RlkHMCJMWpgthRcyqaIiTKpy2DK0fTd3XMM5TMH4/XETjPy8VxX27FkYLE2UHvrZp3IJnhj0aCiQ+kixpjoQgFHGp2gid026uZv2kKnUW7b/quzfCbF/WLwu+QwRaITb0nPKifmHW0ET0r2frTMJb/zsXDM6Y5AoL4PljWD+YaMLr0Zr3eUL++zrT9gjrwyT+JDMACmBh/CONrtZlp01eB4QGnZJDMziL5/MMLbMaKjEOTzoPWHIbQfJ10dMNiH9dMhLAAXgBVcc0L5iMQgwfsPo1WZ+ap68b+3p5kYWZUAIU5ETp2sAMKMeoN0acGtL5ex4n6dUr68udjbcop8zVYrrzIivRoSEPMHRMINVhp3l2JFJp+GYWfnEZkgey9fQZn0Tc9MZAnbq6ddk5WHpBYPILvEJButlc5P78Vj+jPlPD1UBW+r3rONCtxc71njaBE27j2LVqvGkRoZ9qTqYNGqklf/rvRjBM533F2/Ch7xoQn6+XHZ1jTeIif2CzkWcE44JTQayn5LBCN/75Vbx1rbpYxM7nQI2k0uej6dqWnoEaCVgYwwLE3s1iYNgkHE0UeVFF6DPptBZBLIID1QGOXxTiJA7p/cD7Stc03hDCIPW2WkwUJipFlYzTicFN2ISqWzy99Yh7YYDbOXV9Dw/xmbvcN+s5Gk9ASuGBb+oSaON0YUis78+Angq2PwB3wV1FOGNT3MI1nEz5Hz0oVSvdcH0VbV8LY0kkEdZLG/oKSE7zfUsaFF6PZ4+btbKEZUPB6B5+auYVpNgcpPAGsWGkX95LTDSHIf4+XVcLHn7xDpj/T0iPoCWmrlNjs7JWGblVE4yziDU8kMffGKSFwmqnFxyrI+wfqGkE25e0I7Vvs51TZaCFDCtrNZV/ZxatMRb/fFQL8XSkP3Pq4CW+mhRmg6DadnWsbvGZ7J38noiMdI1EySKe5b+42jKAUR7S+0WE8s4tEVr8uq63Km9PxZ4mNMorBqYutV2+eXp3y0JzIx4UpSRMEp7U53bCPNBrvTPITj1FYIDdl0tKo/HpVf9y/i9XsDgXtY0oAFWCTwhUkyM0HmiNv27+h2riIH1bg05BGj51q/SwK4edcYvDGqdxufeuVWOcw=="
-    }
-  }
-}
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: traefik-wireguard-config
+  namespace: wireguard
+spec:
+  encryptedData:
+    wg0.conf: AgAszGkgJoyhpLJsp8v3qJbpXbPzOBACyb68hxvmIDqeID9UNOlDK3ms/2j+38VgQr7WnRb5oCj/SMNn4y8SjIWqulFA78Zhk2SrYlBb78ZIQXtPAd3tpV8xXns1eiOghxw2qg7BpkmpIcio1YWlvb7T+EIc2gdT97uOu/v+LQQPQ5Tq1TzNyLfUPjFttrl7gj7xia5K6Mi+BmBlGemlobm6O0KFJBpm7MninPgcWOjcNd35EglQ/gofmD/2FHjVOfL3ZR+bewjKvD+O5bwHy+jMEzjcua97cfm1BdO9TTzr4A4z9C9DzabSU2/JCcTUvjQ6QEHu0WvrDuBgNjzcfoI9VfamRTvIX02BTY50jK4Els6Kn0X6lt+IPhUArbhpuwBurCOOrjQIMK9fI622AJZMO0FvFZpNvlIbiVEHCTj7IQu4t0Mk5B3LbwA0U0jdjl6iNgog8wCpJqIqJsRhf7OsbBDjsCIpmjQtFNKZaMgbeqWMwzbdAt4vaUxj8oTTjN9ASTqV5ZiFd01sWuaGO9SvXfVFAxH6hk3Yt51fT8O1+pbwa7Z3KGCoUQNYT7uCouyUCQM0vMmuTDFH9hQnV5F7LHK06G2a0BKXBFbRL7O8H3fUVc2s3A6EHSLwcwCaTcT/qicUiQgXp5MMcmKiekZnqHbkgXxsq0teeZ8XbDAL8KBXLDFSWbekQt5cSA6XDfBGRPOUwoxIkJ0pSApC10sjBXIkx6ooJhAvj35CAnekmMj2WUetViJk6vgMAFE0nA/4kDZGKAc9S1VDPwjAPqqwa6bI6gA86pTCnutwHwVRE6+RPugSmSiGPqt4qZ9YKhZu8sLlIdj6Y76fpfICC5fHxv9CnUFvHNlmk5vdTnO+fGlad2vjyOg8cMPIyx1EMaKWJ03QSexFR4KDQJes+vP0pHU6TOu9c0oEb2q7u8lHPIyx2PxkIRNzdL1pgA+8ybu5y1gw89fPJErBMfeS9jnqX2OgZZfXPkZ/+7Fwgj8eBSX6NBVmHtwDwQgq0cunvmGZXIovTl8/2QUkQFvwRA+03OjAH5YBDeVqrP9aDHXKNptXij4WZh52aiOLJ3ok3ykLMYJf8uoz/bL9ItPtf3d+Ehcn3dSmrA5FIVfbu1EfytbJu+JABn1j35EA44dcTs/Rh/nY6LgWnpwqqRBI5K5W4lIqRHDsT3nWvLSasAjDp3XbpbmMdvczTWqPTqCMHM91b5Ox6bAHZ0zFwCHBLiQ9R2IbBbhobgD13XKx8kr6QSFkqi7JYYhjn4UPeg==
+  template:
+    metadata:
+      name: traefik-wireguard-config
+      namespace: wireguard
