@@ -8,4 +8,4 @@ spec:
     size: 1Gi
     storageClass: nfs-client-cnpg
   monitoring:
-    enabled: true
+    enablePodMonitor: true
