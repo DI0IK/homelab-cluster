@@ -26,6 +26,12 @@ spec:
           existingClaim: immich-pvc
     redis:
       enabled: true
+      master:
+        persistence:
+          storageClass: nfs-client
+          size: 1Gi
+          annotations:
+            nfs.io/storage-path: redis
     env:
       DB_HOSTNAME: immich-rw
       DB_USERNAME: immich
