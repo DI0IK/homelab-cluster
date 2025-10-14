@@ -25,5 +25,7 @@ spec:
         - CREATE EXTENSION IF NOT EXISTS "cube" CASCADE;
         - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
   storage:
-    size: 8Gi
-    storageClass: nfs-client
+    size: 1Gi
+    storageClass: nfs-client-cnpg
+  monitoring:
+    enablePodMonitor: true
