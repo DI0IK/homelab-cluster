@@ -123,13 +123,13 @@ spec:
           existingClaim: immich-ext-manger-pvc
           mountPath: /usr/src/app/externalLibraries_manger
           readOnly: true
-        external-wolkestahl:
-          enabled: true
-          readOnly: true
-          type: hostPath
-          hostPath: /Bilder
-          hostPathType: Directory
-          mountPath: /usr/src/app/externalLibraries_wolkestahl
+      #        external-wolkestahl:
+      #          enabled: true
+      #          readOnly: true
+      #          type: hostPath
+      #          hostPath: /Bilder
+      #          hostPathType: Directory
+      #          mountPath: /usr/src/app/externalLibraries_wolkestahl
       controller:
         replicas: 1
         strategy: RollingUpdate
