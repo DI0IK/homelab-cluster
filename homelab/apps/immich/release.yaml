@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: immich
-      version: "0.9.3"
+      version: "0.10.0"
       sourceRef:
         kind: HelmRepository
         name: immich
@@ -24,14 +24,8 @@ spec:
       persistence:
         library:
           existingClaim: immich-pvc
-    redis:
+    valkey:
       enabled: true
-      master:
-        persistence:
-          storageClass: nfs-client
-          size: 1Gi
-          annotations:
-            nfs.io/storage-path: redis
     env:
       DB_HOSTNAME: immich-rw
       DB_USERNAME: immich
