@@ -24,81 +24,6 @@ spec:
       persistence:
         library:
           existingClaim: immich-pvc
-      configuration:
-        machineLearning:
-          clip:
-            enabled: true
-            modelName: "ViT-B-16-SigLIP2__webli"
-          "facialRecognition":
-            {
-              "enabled": true,
-              "modelName": "buffalo_l",
-              "minScore": 0.7,
-              "maxDistance": 0.3,
-              "minFaces": 3,
-            }
-        trash:
-          enabled: false
-          days: 30
-        storageTemplate:
-          enabled: true
-          template: "{{y}}/{{MM}}/{{dd}}/{{filename}}"
-        oauth:
-          autoLaunch: true
-          autoRegister: true
-          buttonText: "Login with Authentik"
-          clientId: iPFX7ek90F00029l0XIxCiPyxGUZaiqvXu3HaI1k
-          clientSecret: 1Qao7wBy04TuUYRs9uiWeV48QMap23MTFqt23gaEvoC5BXw6jrVdReGyXqkobnGlegyF9WclGZLKJaWNv7ywrywjupwdB4aEEUTxkdQYWjyEm633MTyj7s0W5j1LXxRN
-          defaultStorageQuota: 0
-          enabled: true
-          issuerUrl: https://sso.dominikstahl.dev:10443/application/o/immich/
-        passwordLogin:
-          enabled: false
-        server:
-          externalDomain: https://photos.dominikstahl.dev
-        ffmpeg:
-          {
-            "crf": 23,
-            "threads": 0,
-            "preset": "ultrafast",
-            "targetVideoCodec": "h264",
-            "acceptedVideoCodecs": ["h264"],
-            "targetAudioCodec": "aac",
-            "acceptedAudioCodecs": ["aac", "mp3", "libopus"],
-            "acceptedContainers": ["mov", "ogg", "webm"],
-            "targetResolution": "720",
-            "maxBitrate": "0",
-            "bframes": -1,
-            "refs": 0,
-            "gopSize": 0,
-            "temporalAQ": false,
-            "cqMode": "auto",
-            "twoPass": false,
-            "preferredHwDevice": "auto",
-            "transcode": "required",
-            "tonemap": "hable",
-            "accel": "qsv",
-            "accelDecode": true,
-          }
-        job:
-          {
-            "backgroundTask": { "concurrency": 5 },
-            "smartSearch": { "concurrency": 4 },
-            "metadataExtraction": { "concurrency": 5 },
-            "faceDetection": { "concurrency": 3 },
-            "search": { "concurrency": 5 },
-            "sidecar": { "concurrency": 5 },
-            "library": { "concurrency": 5 },
-            "migration": { "concurrency": 5 },
-            "thumbnailGeneration": { "concurrency": 5 },
-            "videoConversion": { "concurrency": 1 },
-            "notifications": { "concurrency": 5 },
-          }
-        "library":
-          {
-            "scan": { "enabled": true, "cronExpression": "0 10 * * *" },
-            "watch": { "enabled": false },
-          }
     redis:
       enabled: true
     env:
@@ -106,6 +31,7 @@ spec:
       DB_USERNAME: immich
       DB_DATABASE_NAME: immich
       DB_PASSWORD: immich
+      IMMICH_CONFIG_FILE: /config/immich-config.yaml
 
     image:
       #repository: "ghcr.io/immich-app/immich-server"
@@ -122,6 +48,11 @@ spec:
           enabled: true
           existingClaim: immich-ext-manger-pvc
           mountPath: /usr/src/app/externalLibraries_manger
+          readOnly: true
+        config:
+          enabled: true
+          existingClaim: immich-config
+          mountPath: /config
           readOnly: true
       #        external-wolkestahl:
       #          enabled: true
