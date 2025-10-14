@@ -1,0 +1,26 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: immich
+  namespace: immich
+  annotations:
+    gethomepage.dev/href: "https://photos.dominikstahl.dev"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "Immich"
+    gethomepage.dev/group: Media
+    gethomepage.dev/icon: immich
+    gethomepage.dev/app: immich
+    gethomepage.dev/name: Immich
+    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/allowGroups: Immich
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`photos.dominikstahl.dev`)
+      kind: Rule
+      priority: 10
+      services:
+        - name: immich-server
+          port: http

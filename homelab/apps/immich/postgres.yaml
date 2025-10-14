@@ -1,0 +1,18 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: immich-postgres-user
+  namespace: postgres
+spec:
+  encryptedData:
+    password: AgADasAnEr2dNtOKn337lKath1WDJpFSGw2vBRxoR64BJ8JFjxT1B4+BSqZCdNku42UubaB7P/GYAUw2fuT0z8KEiKcCnMQWRaKybnRqrNt8u5Ats5bX0Sc2lO3yCbGpGGSuxKEDRDuGHcwL5wnznyjMvw9yYJUbha2o92v/1GshozLWm0cNfLqNyp8DifAoVfiGanpXur6JX+KwxwC0xzHhWtdiIsIFQpADHXHyuvakKxhwbryJryYxL0XoakuVOZrqtZaBWuTlrPO4Fqvtz6bTjVGatV0lDt7B9psxxbSkvOGhalTteH25FCgn6yg3xuUm2oFu5ebPDeV5OgeenJusoUFwv9catK8B2+5QgmpA5apXosKcmqeazsqI5U//mcPdkqEo+vhcpuryW90VPsd1AILSee4QJ23NlYlSEaGFMCBY9vypukaiCN4ZSucO18jlE79C6AupqkINOB38eWqFaXriynf+snpKyoI0agchLDPEb0TAOkyHg8tq1g01Njp8fha0qZFYktAhQ2ZPW6sNiT/4xXyzm31PQdQpol+fFQpImlqB5D7l9K9nk2pFojln89CxgUFZ75wRpIteB1bRvpgpnbWA2GNYibcCy1s/xjpsKHWI+BIaH8SH6+ckb0NJH2x0FZC95D8mFAN6Hhx6DtcAu0Dozq388Yvq1jmOJySY3vk5ETVHR1AAqKq4avNfP99DUbE3
+    username: AgACW2cSMYDslE3jA7ZCtcphraocn5dJZSoGosu76h6SaY7kNKChVy7OcyN9LSx+QVMcKLI2wdHPph9K+Poq21046Eg7Z6G25WRYvn08SMjUGOBd4vtGzrvvTm5GxE5z/ZgWz+zD8Z4Aminf9yhfI4BR1mulzfGrw1/PU112rfW5ZHtzYqj8jo8+1QsIAHpbakVIak8PN4/WOgiQe4ByvfOaC70hCJFAxbiBPJGK2yQbwN7UGuqfnzaSh/YfIH7BhOVwXVpsTwakMfYQ18PFhHONUdHpxrBRCHBWwtkAO6mYDBOyJtRj1C33/wfnL4MVUOcssSnOdPpRF/+gdDyxDs6oQhDHRS9iFjgf7jut546IKH5poL1ySgspLtfVzf+H9jtJkhudvn9syFF9mXbhN/R3q/K6QakCC9tv6UlcXOReStyE92J8CgM33XqhtrTCe/OGjLdC8c5tMijMe8NbJFmv1nckvdhnZ0Wli6VJ/cQHt5GzmF6QpN8tjjNdo1kAuC/1Y7cAFjz0uHgVD/sw0Mf2qq2Y52hsr1lkzrJyQ3kX4p0Q/MQE/hnPQvn0GVS/ow9l7BE+fsFs0KjeLIpEcWdIyk8xSw1P+lnDXiifBQp3LcNQPVXf0eiMB0eNfTySTx29/om1TnNjENCAMcIaXhGjOYtc1Tmb7iOLrCHcQTxaBsaAlpMJGx4tHCbcQzodkwx3KMT2TG3t
+  template:
+    metadata:
+      annotations:
+        replicator.v1.mittwald.de/replicate-to: immich
+        replicator.v1.mittwald.de/replication-allowed: "true"
+      name: immich-postgres-user
+      namespace: postgres
+    type: Opaque
