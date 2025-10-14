@@ -102,7 +102,7 @@ spec:
     redis:
       enabled: true
     env:
-      DB_HOSTNAME: immich-rw.postgres
+      DB_HOSTNAME: immich-rw
       DB_USERNAME: immich
       DB_DATABASE_NAME: immich
       DB_PASSWORD: immich
