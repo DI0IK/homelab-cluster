@@ -41,7 +41,7 @@ for file in "${secret_files[@]}"; do
     fi
 
     # Construct the output filename by removing the '-secret' suffix.
-    # For example, 'app/my-secret.yaml' becomes 'app/my.yaml'.
+    # For example, 'app/credentials-secret.yaml' becomes 'app/credentials.yaml'.
     output_file="${file/-secret/}"
 
     echo "Processing: ${file}"
