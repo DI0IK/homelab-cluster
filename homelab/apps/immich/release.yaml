@@ -26,19 +26,26 @@ spec:
           existingClaim: immich-pvc
     valkey:
       enabled: true
-    env:
-      DB_HOSTNAME: immich-rw.immich.svc.cluster.local
-      DB_PORT: "5432"
-      DB_USERNAME: immich
-      DB_DATABASE_NAME: immich
-      DB_PASSWORD: immich
-      IMMICH_CONFIG_FILE: /config/immich-config.yaml
 
-    image:
-      #repository: "ghcr.io/immich-app/immich-server"
-      tag: v2.0.1
-
+    controllers:
+      main:
+        containers:
+          main:
+            env:
+              DB_HOSTNAME: immich-rw.immich.svc.cluster.local
+              DB_PORT: "5432"
+              DB_USERNAME: immich
+              DB_DATABASE_NAME: immich
+              DB_PASSWORD: immich
+              IMMICH_CONFIG_FILE: /config/immich-config.yaml
     server:
+      controllers:
+        main:
+          containers:
+            main:
+              image:
+                repository: ghcr.io/immich-app/immich-server
+                tag: v2.0.1
       persistence:
         external:
           enabled: true
@@ -63,14 +70,12 @@ spec:
       #          hostPath: /Bilder
       #          hostPathType: Directory
       #          mountPath: /usr/src/app/externalLibraries_wolkestahl
-      controller:
-        replicas: 1
-        strategy: RollingUpdate
     machine-learning:
       enabled: true
-      image:
-        repository: ghcr.io/immich-app/immich-machine-learning
-        tag: v2.0.1
-      controller:
-        replicas: 1
-        strategy: RollingUpdate
+      controllers:
+        main:
+          containers:
+            main:
+              image:
+                repository: ghcr.io/immich-app/immich-machine-learning
+                tag: v2.0.1
