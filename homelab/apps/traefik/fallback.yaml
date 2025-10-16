@@ -5,24 +5,14 @@ metadata:
   name: fallback-upstream
   namespace: traefik
 spec:
-  # No selector: we will provide Endpoints pointing to the external IP
+  # Use ExternalName to route to the external hostname so DNS is respected
+  type: ExternalName
+  externalName: ha.dominikstahl.dev
   ports:
     - name: https
       port: 443
       protocol: TCP
       targetPort: 443
----
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: fallback-upstream
-  namespace: traefik
-subsets:
-  - addresses:
-      - ip: 217.154.87.4
-    ports:
-      - name: https
-        port: 443
 ---
 # Retry middleware to mitigate transient upstream failures
 apiVersion: traefik.io/v1alpha1
@@ -43,7 +33,8 @@ metadata:
 spec:
   headers:
     customRequestHeaders:
-      Host: "{host}"
+      # Always set upstream Host to the external hostname
+      Host: "ha.dominikstahl.dev"
 ---
 # ServersTransport for the fallback upstream: skip TLS verification (for testing/homelab)
 apiVersion: traefik.io/v1alpha1
@@ -75,7 +66,7 @@ spec:
           port: 443
           # ask Traefik to use TLS to upstream
           scheme: https
-          # preserve the original Host header when proxying
-          passHostHeader: true
+          # do NOT pass the original Host header; we set a fixed Host above
+          passHostHeader: false
           # use the fallback servers transport (skip TLS verification)
           serversTransport: fallback-servers-transport
