@@ -1,0 +1,15 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: twonote-timetracking
+  namespace: twonote-timetracking
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`twonote.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: twonote-service
+          port: http

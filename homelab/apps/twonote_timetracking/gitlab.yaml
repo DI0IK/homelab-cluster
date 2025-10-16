@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: twonote-secret
+  namespace: twonote-timetracking
+spec:
+  encryptedData:
+    GITLAB_TOKEN: AgAYaxVcltbUSn4WkYIi4X0oJ0m+TxN++2ndSudEpV1CJd1aE+Ch1+tQD0/c37D8EXI8YR4Ilb9TkwY6GGgbxUEL6UAfRALMVKPMKy70jmzSjjzeM3MbhpR0PylsMR7TvMve5NNASSmnZwmtSWGRKe1mSw+r0Mgx1R0j2fOrmLqn2F9gMpCu4Gee243DUbRv/0VogqydFsLPd4Y8/10znbibGxTNZO4hIaNpiMa66qr7l0YziAd+a7CyjPx9K0P7QjLGRRjEJXKK88/+wnm4MEEfN/4q8YDAiKwn2nJ7LM0HZC3XUIvoedF+mVIPqAGfkR3gZnyXRnKeeC31YdtUPiUv3mTIjT3hTn3lcQuvelK52+hRf7bMeVFTWH2DtthA3u1VaGySreF7jXaHgxY7hpe1wkwvbKjMs3UHGifUHkuiOLPTUX37ePdH4lwK74BVVQzChX6TwCTdWCrgEpY73Ep/Y+3DbqSVDSOD6A5PwcuHjlWcOnIG+M8zOiX0LjAWOoSGMaoEgjiv6FNs572LHrY0vdM/je/7mIGXHel7tQonszp4W2YqlHs3vY24e9gVCdWFJug/evALKL+bOdWYkYZF22kSVvtvGlIEIVZRIvu9kmHlRZlUfAtHU6cUfejkSOal6zu4ORg6OHyL9a801usS6EBCFSmYORlj1ws6HpItRbZro64k7TDAAa3Mkimiy2Jr8ZQ4AUEXOL4gYtmLMFHOCQk44IRzQnnN0TyWP6Gwh35cWK8MsYSEhJAP55gkrKK+0y22lUKRoNU=
+  template:
+    metadata:
+      name: twonote-secret
+      namespace: twonote-timetracking
+    type: Opaque

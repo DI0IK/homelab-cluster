@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twonote-timetracking
+  labels:
+    app: twonote-timetracking
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twonote-timetracking
+  template:
+    metadata:
+      labels:
+        app: twonote-timetracking
+    spec:
+      containers:
+        - name: twonote
+          image: ghcr.io/di0ik/gitlab-timetracking-analysis:main
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: twonote-config
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+            # GITLAB_TOKEN is sensitive and should be provided as a Secret/SealedSecret
+            - name: GITLAB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twonote-secret
+                  key: GITLAB_TOKEN
+          ports:
+            - name: http
+              containerPort: 3000
+---
+

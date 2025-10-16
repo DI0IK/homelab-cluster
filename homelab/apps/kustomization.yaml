@@ -16,3 +16,4 @@ resources:
   - ./glance
   - ./authentik
   - ./immich
+  - ./twonote_timetracking

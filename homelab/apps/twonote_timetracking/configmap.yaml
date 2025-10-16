@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: twonote-config
+  namespace: twonote-timetracking
+data:
+  NEXT_PUBLIC_GITLAB_API_URL: "https://gitlab.com/api/graphql"
+  NEXT_PUBLIC_GITLAB_GROUP_PATH: "dhbw-se/se-tinf24b6/g3-twonote"
+  NEXT_PUBLIC_GITLAB_ISSUE_BASE_URL: "https://gitlab.com/dhbw-se/se-tinf24b6/g3-twonote/-/issues"
+  NEXT_PUBLIC_TEAM_MEMBERS: "DI0IK_DHBW,bubblecup-12,TheCatThatCodes,Rudi-Regentonne,Semir27,mrProm3theus"
+  NEXT_PUBLIC_CATEGORIES: '{"Documentation": "type::docs", "Feature": "type::feature", "Bug": "type::bug", "Chore": "type::chore", "Test": "type::test", "Requirements Engineering": "type::requirements", "Design": "type::design", "Refactoring": "type::refactor"}'
+  START_DATE: "2025-10-01"
+  END_DATE: "2026-10-01"
