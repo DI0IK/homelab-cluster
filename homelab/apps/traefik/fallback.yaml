@@ -24,6 +24,16 @@ subsets:
       - name: https
         port: 443
 ---
+# Retry middleware to mitigate transient upstream failures
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: fallback-retry
+  namespace: traefik
+spec:
+  retry:
+    attempts: 2
+---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -36,6 +46,8 @@ spec:
   routes:
     - match: HostRegexp(`{host:.+}`) && PathPrefix(`/`)
       kind: Rule
+      middlewares:
+        - name: fallback-retry
       services:
         - name: fallback-upstream
           port: 443
