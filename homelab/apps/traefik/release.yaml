@@ -71,6 +71,7 @@ spec:
     logs:
       general:
         format: json
+        level: DEBUG # Change to DEBUG for more verbosity, INFO for less
       access:
         enabled: true
         format: json
