@@ -5,48 +5,23 @@ metadata:
   name: fallback-upstream
   namespace: traefik
 spec:
-  # Use ExternalName to route to the external hostname so DNS is respected
-  type: ExternalName
-  externalName: ha.dominikstahl.dev
   ports:
     - name: https
       port: 443
       protocol: TCP
       targetPort: 443
 ---
-# Retry middleware to mitigate transient upstream failures
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
+apiVersion: v1
+kind: Endpoints
 metadata:
-  name: fallback-retry
+  name: fallback-upstream
   namespace: traefik
-spec:
-  retry:
-    attempts: 2
----
-# Headers middleware to rewrite Host header to the request host (without port)
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: fallback-host-rewrite
-  namespace: traefik
-spec:
-  headers:
-    customRequestHeaders:
-      # Preserve the original Host header (without port) when proxying
-      Host: "{host}"
----
-# ServersTransport for the fallback upstream: skip TLS verification (for testing/homelab)
-apiVersion: traefik.io/v1alpha1
-kind: ServersTransport
-metadata:
-  name: fallback-servers-transport
-  namespace: traefik
-spec:
-  insecureSkipVerify: true
-  # Ensure TLS SNI uses the external hostname so the upstream certificate and
-  # virtual host selection match even when Traefik forwards the original Host header.
-  serverName: ha.dominikstahl.dev
+subsets:
+  - addresses:
+      - ip: 217.154.87.4
+    ports:
+      - name: https
+        port: 443
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -61,15 +36,8 @@ spec:
     - match: PathPrefix(`/`)
       priority: 1
       kind: Rule
-      middlewares:
-        - name: fallback-host-rewrite
-        - name: fallback-retry
       services:
         - name: fallback-upstream
           port: 443
-          # ask Traefik to use TLS to upstream
           scheme: https
-          # preserve the original Host header so upstream sees the client's Host
           passHostHeader: true
-          # use the fallback servers transport (skip TLS verification)
-          serversTransport: fallback-servers-transport
