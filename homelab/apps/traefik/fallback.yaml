@@ -33,8 +33,8 @@ metadata:
 spec:
   headers:
     customRequestHeaders:
-      # Always set upstream Host to the external hostname
-      Host: "ha.dominikstahl.dev"
+      # Preserve the original Host header (without port) when proxying
+      Host: "{host}"
 ---
 # ServersTransport for the fallback upstream: skip TLS verification (for testing/homelab)
 apiVersion: traefik.io/v1alpha1
@@ -66,7 +66,7 @@ spec:
           port: 443
           # ask Traefik to use TLS to upstream
           scheme: https
-          # do NOT pass the original Host header; we set a fixed Host above
-          passHostHeader: false
+          # preserve the original Host header so upstream sees the client's Host
+          passHostHeader: true
           # use the fallback servers transport (skip TLS verification)
           serversTransport: fallback-servers-transport
