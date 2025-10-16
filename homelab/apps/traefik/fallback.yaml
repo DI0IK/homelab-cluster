@@ -44,6 +44,9 @@ metadata:
   namespace: traefik
 spec:
   insecureSkipVerify: true
+  # Ensure TLS SNI uses the external hostname so the upstream certificate and
+  # virtual host selection match even when Traefik forwards the original Host header.
+  serverName: ha.dominikstahl.dev
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
