@@ -55,3 +55,14 @@ spec:
           scheme: https
           # preserve the original Host header when proxying
           passHostHeader: true
+          # use the fallback servers transport (skip TLS verification)
+          serversTransport: fallback-servers-transport
+---
+# ServersTransport for the fallback upstream: skip TLS verification (for testing/homelab)
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: fallback-servers-transport
+  namespace: traefik
+spec:
+  insecureSkipVerify: true
