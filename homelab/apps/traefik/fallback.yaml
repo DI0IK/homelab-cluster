@@ -33,6 +33,27 @@ metadata:
 spec:
   retry:
     attempts: 2
+
+---
+# Headers middleware to rewrite Host header to the request host (without port)
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: fallback-host-rewrite
+  namespace: traefik
+spec:
+  headers:
+    customRequestHeaders:
+      Host: "{host}"
+---
+# ServersTransport for the fallback upstream: skip TLS verification (for testing/homelab)
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: fallback-servers-transport
+  namespace: traefik
+spec:
+  insecureSkipVerify: true
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -47,6 +68,7 @@ spec:
     - match: HostRegexp(`{host:.+}`) && PathPrefix(`/`)
       kind: Rule
       middlewares:
+        - name: fallback-host-rewrite
         - name: fallback-retry
       services:
         - name: fallback-upstream
@@ -57,12 +79,3 @@ spec:
           passHostHeader: true
           # use the fallback servers transport (skip TLS verification)
           serversTransport: fallback-servers-transport
----
-# ServersTransport for the fallback upstream: skip TLS verification (for testing/homelab)
-apiVersion: traefik.io/v1alpha1
-kind: ServersTransport
-metadata:
-  name: fallback-servers-transport
-  namespace: traefik
-spec:
-  insecureSkipVerify: true
