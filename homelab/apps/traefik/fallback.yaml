@@ -1,0 +1,34 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: TraefikService
+metadata:
+  name: fallback-upstream
+  namespace: traefik
+spec:
+  loadBalancer:
+    # upstream server to forward unmatched requests to
+    servers:
+      - url: "https://192.168.179.160:443"
+    # preserve the original Host header when proxying
+    passHostHeader: true
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: fallback-ingressroute
+  namespace: traefik
+spec:
+  # listen on both HTTP and HTTPS entrypoints
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    # Catch-all route that only matches when no more specific Host() rule matches.
+    # HostRegexp with a generic capture is intentionally less specific than exact Host()
+    # rules so other IngressRoutes for specific hosts take precedence.
+    - match: HostRegexp(`{host:.+}`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: fallback-upstream
+          kind: TraefikService
