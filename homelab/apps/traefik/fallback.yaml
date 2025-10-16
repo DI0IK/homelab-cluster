@@ -9,9 +9,9 @@ spec:
   externalName: dominikstahl.dev
   ports:
     - name: https
-      port: 443
+      port: 20443
       protocol: TCP
-      targetPort: 443
+      targetPort: 20443
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -28,6 +28,6 @@ spec:
       kind: Rule
       services:
         - name: fallback-upstream
-          port: 443
+          port: 20443
           scheme: https
           passHostHeader: true
