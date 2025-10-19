@@ -17,3 +17,4 @@ resources:
   - ./authentik
   - ./immich
   - ./twonote_timetracking
+  - ./anyconnect

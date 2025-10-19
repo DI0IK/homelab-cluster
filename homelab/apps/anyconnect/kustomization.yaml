@@ -1,0 +1,5 @@
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - wireguard-config.yaml
+  - anyconnect-config.yaml
