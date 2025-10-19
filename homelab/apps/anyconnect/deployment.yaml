@@ -59,22 +59,22 @@ spec:
           image: ghcr.io/di0ik/openconnect-vpn:main
           env:
             - name: VPN_SERVER
-              from:
+              valueFrom:
                 secretKeyRef:
                   name: anyconnect-config
                   key: vpn_server
             - name: VPN_USERNAME
-              from:
+              valueFrom:
                 secretKeyRef:
                   name: anyconnect-config
                   key: vpn_username
             - name: VPN_PASSWORD
-              from:
+              valueFrom:
                 secretKeyRef:
                   name: anyconnect-config
                   key: vpn_password
             - name: VPN_GROUP
-              from:
+              valueFrom:
                 secretKeyRef:
                   name: anyconnect-config
                   key: vpn_group
