@@ -61,22 +61,22 @@ spec:
             - name: VPN_SERVER
               from:
                 secretKeyRef:
-                  name: anyconnect-vpn-secret
+                  name: anyconnect-config
                   key: vpn_server
             - name: VPN_USERNAME
               from:
                 secretKeyRef:
-                  name: anyconnect-vpn-secret
+                  name: anyconnect-config
                   key: vpn_username
             - name: VPN_PASSWORD
               from:
                 secretKeyRef:
-                  name: anyconnect-vpn-secret
+                  name: anyconnect-config
                   key: vpn_password
             - name: VPN_GROUP
               from:
                 secretKeyRef:
-                  name: anyconnect-vpn-secret
+                  name: anyconnect-config
                   key: vpn_group
           securityContext:
             capabilities:
