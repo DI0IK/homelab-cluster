@@ -92,4 +92,4 @@ spec:
       volumes:
         - name: cfgmap
           secret:
-            secretName: wireguard-config
+            secretName: wireguard-config-anyconnect
