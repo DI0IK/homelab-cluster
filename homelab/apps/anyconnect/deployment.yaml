@@ -57,6 +57,7 @@ spec:
               subPath: wg0.conf
         - name: anyconnect-sidecar
           image: ghcr.io/di0ik/openconnect-vpn:main
+          imagePullPolicy: Always
           env:
             - name: VPN_SERVER
               valueFrom:
