@@ -1,0 +1,15 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hash_proxy
+  namespace: hash_proxy
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`hash_proxy.dominikstahl.dev`)
+      kind: Rule
+      services:
+        - name: hash_proxy-service
+          port: http

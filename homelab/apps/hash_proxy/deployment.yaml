@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hash_proxy
+  labels:
+    app: hash_proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hash_proxy
+  template:
+    metadata:
+      labels:
+        app: hash_proxy
+    spec:
+      containers:
+        - name: twonote
+          image: ghcr.io/di0ik/gpu-hashing:main
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 5000
+---
+
