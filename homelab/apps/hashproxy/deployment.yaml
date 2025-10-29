@@ -22,5 +22,10 @@ spec:
           ports:
             - name: http
               containerPort: 5000
----
-
+          volumeMounts:
+            - name: hashproxy-data
+              mountPath: /data
+      volumes:
+        - name: hashproxy-data
+          persistentVolumeClaim:
+            claimName: hashproxy-pvc
