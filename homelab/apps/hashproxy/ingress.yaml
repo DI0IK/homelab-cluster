@@ -8,7 +8,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`hash_proxy.dominikstahl.dev`)
+    - match: Host(`hashproxy.dominikstahl.dev`)
       kind: Rule
       services:
         - name: hashproxy-service
