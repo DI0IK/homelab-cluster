@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hash_proxy
+  name: hashproxy
   labels:
-    app: hash_proxy
+    app: hashproxy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hash_proxy
+      app: hashproxy
   template:
     metadata:
       labels:
-        app: hash_proxy
+        app: hashproxy
     spec:
       containers:
         - name: twonote
