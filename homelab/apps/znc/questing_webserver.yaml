@@ -54,6 +54,10 @@ spec:
               mountPath: /usr/share/nginx/html/znc-data
             - name: nginx-config
               mountPath: /etc/nginx/conf.d
+          securityContext:
+            runAsUser: 100
+            runAsGroup: 101
+            fsGroup: 101
       volumes:
         - name: znc-data
           persistentVolumeClaim:
