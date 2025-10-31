@@ -10,7 +10,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /mnt/pool1/Media/Bilder_Immich
     server: 192.168.179.101
@@ -41,11 +41,11 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /mnt/pool1/Media/Bilder
     server: 192.168.179.101
-    readOnly: false
+    readOnly: true
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -72,11 +72,11 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /mnt/pool1/Home/Manger/Bilder
     server: 192.168.179.101
-    readOnly: false
+    readOnly: true
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

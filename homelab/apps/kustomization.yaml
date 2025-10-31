@@ -15,7 +15,7 @@ resources:
   - ./arr
   - ./glance
   - ./authentik
-  # - ./immich
+  - ./immich
   - ./twonote_timetracking
   - ./anyconnect
   # - ./hashproxy
