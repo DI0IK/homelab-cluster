@@ -4,4 +4,3 @@ namespace: znc
 resources:
   - namespace.yaml
   - znc.yaml
-  - questing_webserver.yaml
