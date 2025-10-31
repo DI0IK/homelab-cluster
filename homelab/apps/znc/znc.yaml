@@ -85,6 +85,9 @@ spec:
         - name: znc-data
           persistentVolumeClaim:
             claimName: znc-pvc
+        - name: nginx-config
+          configMap:
+            name: questing-webserver-nginx-config
 ---
 apiVersion: v1
 kind: Service
