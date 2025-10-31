@@ -44,6 +44,10 @@ spec:
       labels:
         app: questing-webserver
     spec:
+      securityContext:
+        fsGroup: 101
+        seLinuxOptions:
+          type: container_file_t
       containers:
         - name: nginx
           image: nginx:latest
@@ -54,8 +58,6 @@ spec:
               mountPath: /usr/share/nginx/html/znc-data
             - name: nginx-config
               mountPath: /etc/nginx/conf.d
-          securityContext:
-            fsGroup: 101
       volumes:
         - name: znc-data
           persistentVolumeClaim:
