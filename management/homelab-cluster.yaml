@@ -311,7 +311,7 @@ spec:
       disks:
         bootVolume:
           disk: scsi0
-          sizeGb: 20
+          sizeGb: 40
       format: qcow2
       full: true
       memoryMiB: 12288
