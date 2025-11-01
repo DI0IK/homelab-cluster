@@ -14,47 +14,72 @@ spec:
   storageClassName: nfs-client
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: znc-nginx-pvc
-  annotations:
-    nfs.io/storage-path: data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: nfs-client
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: questing-webserver-nginx-config
+  name: questing-webserver-py-config  # New ConfigMap for the Python app
   labels:
     app: questing-webserver
   namespace: znc
 data:
-  default.conf: |
-    server {
-        listen 8080;
-        server_name localhost;
+  app.py: |
+    from flask import Flask, send_from_directory, abort, make_response
+    from flask_cors import CORS
+    import os
 
-        location /quest_stats.json {
-            root /usr/share/nginx/html/znc-data/modules/propool;
-            add_header Access-Control-Allow-Origin *;
-        }
+    app = Flask(__name__)
+    # Replicates 'add_header Access-Control-Allow-Origin *'
+    CORS(app) 
 
-        location /quest_stats/ {
-            alias /usr/share/nginx/html/znc-data/modules/quest_tracker/;
-            autoindex on;
-            add_header Access-Control-Allow-Origin *;
-        }
+    # Directory where the znc-data volume is mounted
+    BASE_DIR = '/znc-data/modules'
+    PROPOOL_DIR = os.path.join(BASE_DIR, 'propool')
+    QUEST_TRACKER_DIR = os.path.join(BASE_DIR, 'quest_tracker')
 
-        location / {
-            deny all;
-        }
-    }
+    # Replicates 'location /quest_stats.json'
+    @app.route('/quest_stats.json')
+    def serve_quest_stats_json():
+        try:
+            return send_from_directory(PROPOOL_DIR, 'quest_stats.json')
+        except FileNotFoundError:
+            abort(404)
+
+    # Replicates 'location /quest_stats/' with 'autoindex on'
+    @app.route('/quest_stats/')
+    @app.route('/quest_stats/<path:filename>')
+    def serve_quest_tracker(filename=''):
+        full_path = os.path.join(QUEST_TRACKER_DIR, filename)
+
+        if os.path.isdir(full_path):
+            try:
+                # Basic autoindex replication
+                files = os.listdir(full_path)
+                html = f'<h1>Index of /quest_stats/{filename}</h1><hr><ul>'
+                if filename:
+                    html += '<li><a href="../">../</a></li>'
+                for f in sorted(files):
+                    # Add trailing slash for directories
+                    if os.path.isdir(os.path.join(full_path, f)):
+                        f += '/'
+                    html += f'<li><a href="{f}">{f}</a></li>'
+                html += '</ul><hr>'
+                return html
+            except FileNotFoundError:
+                abort(404)
+        
+        # Serve the file if it's not a directory
+        try:
+            return send_from_directory(QUEST_TRACKER_DIR, filename)
+        except FileNotFoundError:
+            abort(404)
+
+    # Replicates 'location / { deny all; }'
+    @app.route('/')
+    def deny_root():
+        return "Forbidden", 403
+
+    if __name__ == '__main__':
+        # Listen on port 8080 to match the Service
+        app.run(host='0.0.0.0', port=8080)
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -85,27 +110,33 @@ spec:
           volumeMounts:
             - name: znc-data
               mountPath: /znc-data
-        - name: nginx
-          image: nginx:latest
+        - name: python-webserver
+          image: python:3.10-slim
           ports:
             - name: http-web
-              containerPort: 8080
+              containerPort: 8080  # Same port as NGINX
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              pip install Flask flask-cors
+              python /app/app.py
           volumeMounts:
-            - name: znc-nginx-data
-              mountPath: /usr/share/nginx/html/znc-data
+            - name: znc-data
+              mountPath: /znc-data
               readOnly: true
-            - name: nginx-config
-              mountPath: /etc/nginx/conf.d
+            - name: python-config
+              mountPath: /app
+      
       volumes:
         - name: znc-data
           persistentVolumeClaim:
             claimName: znc-pvc
-        - name: znc-nginx-data
-          persistentVolumeClaim:
-            claimName: znc-nginx-pvc
-        - name: nginx-config
+        - name: python-config
           configMap:
-            name: questing-webserver-nginx-config
+            name: questing-webserver-py-config
+            items:
+              - key: app.py
+                path: app.py
 ---
 apiVersion: v1
 kind: Service
