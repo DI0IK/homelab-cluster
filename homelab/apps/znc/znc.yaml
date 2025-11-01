@@ -62,9 +62,18 @@ spec:
     spec:
       securityContext:
         fsGroup: 101
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: znc
           image: znc:1.10.1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
           ports:
             - name: znc-port
               containerPort: 6697
@@ -73,6 +82,12 @@ spec:
               mountPath: /znc-data
         - name: nginx
           image: nginx:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
           ports:
             - name: http-web
               containerPort: 80
