@@ -72,7 +72,7 @@ spec:
             - name: znc-data
               mountPath: /znc-data
         - name: nginx
-          image: nginxinc/nginx-unprivileged:latest
+          image: nginx:latest
           ports:
             - name: http-web
               containerPort: 8080
