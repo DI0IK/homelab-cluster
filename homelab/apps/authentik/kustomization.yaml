@@ -6,6 +6,6 @@ resources:
   - all_blueprints.yaml
   - database.yaml
   - authentik-config.yaml
-  # - ingress.yaml
+  - ingress.yaml
   - repository.yaml
   - release.yaml
