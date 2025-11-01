@@ -35,6 +35,8 @@ spec:
       path: /mnt/nvme/homelab
     storageClass:
       pathPattern: "${.PVC.namespace}/${.PVC.annotations.nfs.io/storage-path}"
+    mountOptions:
+      - "context=system_u:object_r:httpd_sys_content_t:s0"
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
