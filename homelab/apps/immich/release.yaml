@@ -35,7 +35,7 @@ spec:
               DB_HOSTNAME: immich-rw.immich.svc.cluster.local
               DB_PORT: "5432"
               DB_USERNAME: immich
-              DB_DATABASE_NAME: immich
+              DB_DATABASE_NAME: postgres
               DB_PASSWORD: immich
               IMMICH_CONFIG_FILE: /config/immich-config.yaml
     server:
