@@ -79,6 +79,7 @@ spec:
           volumeMounts:
             - name: znc-data
               mountPath: /usr/share/nginx/html/znc-data
+              readOnly: true
             - name: nginx-config
               mountPath: /etc/nginx/conf.d
       volumes:
